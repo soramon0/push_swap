@@ -16,20 +16,20 @@ $(NAME): $(LIBFT_NAME) $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) $(LIBFT_NAME) -o $(NAME)
 
 $(LIBFT_NAME):
-	make -C libft
+	$(MAKE) -C libft
 
 run: $(NAME)
 	@./push_swap
 	@rm $(NAME) $(OBJ)
 
 clean:
-	make -C libft clean
+	$(MAKE) -C libft clean
 	rm -f $(OBJ)
 
 fclean: clean
-	make -C libft fclean
+	$(MAKE) -C libft fclean
 	rm -f $(NAME)
 
 re: fclean all
 
-.PHONY: all clean fclean re run
+.PHONY: all clean fclean re run libft
