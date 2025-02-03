@@ -1,19 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap.c                                        :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: klaayoun <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 22:18:11 by klaayoun          #+#    #+#             */
-/*   Updated: 2024/11/05 14:07:37 by klaayoun         ###   ########.fr       */
+/*   Updated: 2024/10/25 22:21:05 by klaayoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
+#include "libft.h"
 
-int	main(void)
+void	*ft_calloc(size_t nmemb, size_t size)
 {
-	ft_putstr_fd("Hello World\n", 2);
-	return (0);
+	void	*ret;
+	size_t	total;
+
+	total = nmemb * size;
+	if (total == 0)
+		return (malloc(0));
+	if (total / size != nmemb)
+		return (NULL);
+	ret = malloc(total);
+	if (ret == NULL)
+		return (NULL);
+	ft_bzero(ret, total);
+	return (ret);
 }

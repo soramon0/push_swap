@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap.c                                        :+:      :+:    :+:   */
+/*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: klaayoun <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/25 22:18:11 by klaayoun          #+#    #+#             */
-/*   Updated: 2024/11/05 14:07:37 by klaayoun         ###   ########.fr       */
+/*   Created: 2024/10/25 22:55:59 by klaayoun          #+#    #+#             */
+/*   Updated: 2024/10/25 22:56:15 by klaayoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
+#include "libft.h"
 
-int	main(void)
+int	ft_isalnum(int c)
 {
-	ft_putstr_fd("Hello World\n", 2);
-	return (0);
+	return (ft_isalpha(c) || ft_isdigit(c));
 }
