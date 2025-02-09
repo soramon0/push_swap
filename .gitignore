@@ -2,3 +2,5 @@
 *.o
 # Binary
 push_swap
+# libft archive
+src/libft/libft.a
