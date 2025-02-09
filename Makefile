@@ -1,9 +1,10 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 NAME = push_swap
 SRC = push_swap.c
 OBJ = $(SRC:.c=.o)
 LIBFT_NAME = ./libft/libft.a
+PROGRAM_ARG="4 67 3 87 23"
 
 all: $(NAME)
 
@@ -22,6 +23,9 @@ run: $(NAME)
 	@./push_swap
 	@rm $(NAME) $(OBJ)
 
+run_check:
+	./push_swap $(PROGRAM_ARG) | ./checker_linux $(PROGRAM_ARG)
+
 clean:
 	$(MAKE) -C libft clean
 	rm -f $(OBJ)
@@ -32,4 +36,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re run libft
+.PHONY: all clean fclean re run libft run_check
