@@ -13,7 +13,27 @@
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
-# include "stdio.h"
 # include "libft/libft.h"
+# include <stdio.h>
+# include <stdlib.h>
+
+typedef struct s_stack
+{
+	int		*data;
+	size_t	len;
+	size_t	cap;
+}			t_stack;
+
+typedef struct s_swapable
+{
+	t_stack	*a;
+	t_stack	*b;
+}			t_swapable;
+
+t_stack		*stack_init(size_t cap);
+void		stack_free(t_stack *s);
+t_swapable	*swapable_init(size_t cap);
+void		swapable_free(t_swapable *area);
+t_swapable	*create_swaparea(char *input);
 
 #endif

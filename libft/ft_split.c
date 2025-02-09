@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-char	**ft_cleanup(char **arr)
+char	**ft_split_free(char **arr)
 {
 	char	**t;
 
@@ -44,7 +44,7 @@ static char	**ft_allocate(char **lst, char const *s, char sep)
 		{
 			*t = ft_substr(s, 0, tmp - s);
 			if (*t == NULL)
-				return (ft_cleanup(lst));
+				return (ft_split_free(lst));
 			s = tmp;
 			++t;
 		}

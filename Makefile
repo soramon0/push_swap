@@ -1,7 +1,7 @@
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
 NAME = push_swap
-SRC = push_swap.c
+SRC = push_swap.c swapable.c parser.c
 OBJ = $(SRC:.c=.o)
 LIBFT_NAME = ./libft/libft.a
 PROGRAM_ARG="4 67 3 87 23"
