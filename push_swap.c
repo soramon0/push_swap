@@ -17,8 +17,9 @@ int	ft_isnum(char *str)
 	ssize_t	i;
 
 	i = 0;
-	if (str[i] == '-')
+	if (str[i] == '-' || str[i] == '+')
 		i++;
+	// check overflow
 	while (str[i])
 	{
 		if (ft_isdigit(str[i]) == 0)
