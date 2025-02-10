@@ -38,15 +38,21 @@ debug: $(LIBFT_NAME) $(OBJ)
 	$(CC) $(CFLAGS) $(EXTRA_FLAGS) $(OBJ) $(LIBFT_NAME) -o $(NAME)
 
 profile_clean:
-	rm -f callgrind.out*
+	rm -f massif.out* callgrind.out* profile_*.txt
 
-# --inclusive=yes: Instead of using exclusive cost of functions as sorting order, use and show inclusive cost.
-# --tree=both: Interleave into the top level list of functions, information on the callers and the callees of each function. In these lines, which represents executed calls, the cost gives the number of events spent in the call. Indented, above each function, there is the list of callers, and below, the list of callees. The sum of events in calls to a given function (caller lines), as well as the sum of events in calls from the function (callee lines) together with the self cost, gives the total inclusive cost of the function.
-profile: profile_clean debug
+profile_cpu_gen: profile_clean debug
 	valgrind --tool=callgrind ./push_swap "$(PROGRAM_ARG)"
-	callgrind_annotate $(shell find . -type f -name "callgrind.out*") --inclusive=yes --tree=both > profile.txt
+
+profile_cpu: profile_cpu_gen
+	callgrind_annotate $(shell find . -type f -name callgrind.out*) --inclusive=yes --tree=both > profile_cpu.txt
+
+profile_mem_gen: profile_clean debug
+	valgrind --tool=massif ./push_swap "$(PROGRAM_ARG)"
+
+profile_mem: profile_mem_gen
+	ms_print $(shell find . -type f -name massif.out*) > profile_mem.txt
 
 run_checker:
 	./push_swap "$(PROGRAM_ARG)" | ./checker_linux "$(PROGRAM_ARG)"
 
-.PHONY: all clean fclean re run libft run_checker debug profile profile_clean
+.PHONY: all clean fclean re run libft run_checker debug profile_cpu profile_mem profile_clean profile_mem_gen profile_cpu_gen
