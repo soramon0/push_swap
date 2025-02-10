@@ -1,9 +1,9 @@
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
 NAME = push_swap
-SRC = main.c ./src/swapable.c ./src/parser.c
+SRC = main.c src/swapable.c src/parser.c
 OBJ = $(SRC:.c=.o)
-LIBFT_NAME = ./src/libft/libft.a
+LIBFT_NAME = src/libft/libft.a
 PROGRAM_ARG="4 67 3 87 23"
 
 all: $(NAME)
@@ -27,11 +27,11 @@ run_check:
 	./push_swap $(PROGRAM_ARG) | ./checker_linux $(PROGRAM_ARG)
 
 clean:
-	$(MAKE) -C ./src/libft clean
+	$(MAKE) -C src/libft clean
 	rm -f $(OBJ)
 
 fclean: clean
-	$(MAKE) -C ./src/libft fclean
+	$(MAKE) -C src/libft fclean
 	rm -f $(NAME)
 
 re: fclean all

@@ -46,6 +46,8 @@ void	swapable_free(t_swapable *area)
 	{
 		stack_free(area->a);
 		stack_free(area->b);
+		area->a = NULL;
+		area->b = NULL;
 		free(area);
 	}
 }

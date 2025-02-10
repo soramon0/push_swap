@@ -12,7 +12,6 @@
 
 #include "push_swap.h"
 
-// (TODO): check overflow and duplicates
 static int	ft_isnum(char *str)
 {
 	ssize_t	i;
@@ -31,10 +30,28 @@ static int	ft_isnum(char *str)
 	return (1);
 }
 
+static ssize_t	find_index(t_stack *s, int needle)
+{
+	size_t	i;
+
+	if (s->len == 0)
+		return (-1);
+	i = 0;
+	while (i < s->len)
+	{
+		if (s->data[i] == needle)
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
+// (TODO): check overflow
 t_swapable	*create_swaparea(char *input)
 {
-	char		**nums;
 	t_swapable	*area;
+	char		**nums;
+	int			num;
 	size_t		i;
 
 	i = 0;
@@ -52,7 +69,11 @@ t_swapable	*create_swaparea(char *input)
 	{
 		if (ft_isnum(nums[i]) == -1)
 			return (ft_split_free(nums), swapable_free(area), NULL);
-		area->a->data[area->a->len++] = ft_atoi(nums[i]);
+		num = ft_atoi(nums[i]);
+		if (find_index(area->a, num) != -1)
+			return (ft_split_free(nums), swapable_free(area), NULL);
+		area->a->data[area->a->len++] = num;
 	}
+	ft_split_free(nums);
 	return (area);
 }

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./src/push_swap.h"
+#include "src/push_swap.h"
 
 int	main(int argc, char *argv[])
 {
@@ -30,5 +30,6 @@ int	main(int argc, char *argv[])
 	{
 		printf("%d\n", area->a->data[i++]);
 	}
+	swapable_free(area);
 	return (0);
 }
