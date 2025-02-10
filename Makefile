@@ -1,6 +1,6 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
-EXTRA_FLAGS = -g
+CFLAGS = -Wall -Wextra -Werror -g
+EXTRA_FLAGS = 
 NAME = push_swap
 SRC = main.c $(shell find ./src -depth -maxdepth 1 -type f -name "*.c")
 OBJ = $(SRC:.c=.o)
@@ -38,14 +38,12 @@ debug: $(LIBFT_NAME) $(OBJ)
 	$(CC) $(CFLAGS) $(EXTRA_FLAGS) $(OBJ) $(LIBFT_NAME) -o $(NAME)
 
 profile_cpu_gen: debug
-	rm -f callgrind.out*
-	valgrind --tool=callgrind ./push_swap "$(PROGRAM_ARG)"
+	valgrind --tool=callgrind --dump-instr=yes --collect-jumps=yes ./push_swap "$(PROGRAM_ARG)"
 
 profile_cpu: profile_cpu_gen
 	callgrind_annotate $(shell find . -type f -name callgrind.out*) --inclusive=yes --tree=both > profile_cpu.txt
 
 profile_mem_gen: debug
-	rm -f massif.out*
 	valgrind --tool=massif ./push_swap "$(PROGRAM_ARG)"
 
 profile_mem: profile_mem_gen

@@ -17,23 +17,41 @@
 # include <stdio.h>
 # include <stdlib.h>
 
+typedef struct s_ht_node
+{
+	int					content;
+	struct s_ht_node	*next;
+}						t_ht_node;
+
+typedef struct s_hash_table
+{
+	t_ht_node			**keys;
+	size_t				size;
+}						t_hash_table;
+
 typedef struct s_stack
 {
-	int		*data;
-	size_t	len;
-	size_t	cap;
-}			t_stack;
+	int					*data;
+	size_t				len;
+	size_t				cap;
+}						t_stack;
 
 typedef struct s_swapable
 {
-	t_stack	*a;
-	t_stack	*b;
-}			t_swapable;
+	t_stack				*a;
+	t_stack				*b;
+}						t_swapable;
 
-t_stack		*stack_init(size_t cap);
-void		stack_free(t_stack *s);
-t_swapable	*swapable_init(size_t cap);
-void		swapable_free(t_swapable *area);
-t_swapable	*create_swaparea(char *input);
+t_stack					*stack_init(size_t cap);
+void					stack_free(t_stack *s);
+t_swapable				*swapable_init(size_t cap);
+void					swapable_free(t_swapable *area);
+t_swapable				*create_swaparea(char *input);
+void					ft_hash_table_insert(t_hash_table *ht, int key);
+t_hash_table			*ft_create_hash_table(size_t size);
+size_t					ft_hash_table_hash(t_hash_table *ht, int key);
+t_ht_node				*ft_ht_newkey(int value);
+void					ft_hash_table_free(t_hash_table *ht);
+ssize_t					ft_hash_table_exists(t_hash_table *ht, int key);
 
 #endif
