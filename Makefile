@@ -37,16 +37,15 @@ run: debug
 debug: $(LIBFT_NAME) $(OBJ)
 	$(CC) $(CFLAGS) $(EXTRA_FLAGS) $(OBJ) $(LIBFT_NAME) -o $(NAME)
 
-profile_clean:
-	rm -f massif.out* callgrind.out* profile_*.txt
-
-profile_cpu_gen: profile_clean debug
+profile_cpu_gen: debug
+	rm -f callgrind.out*
 	valgrind --tool=callgrind ./push_swap "$(PROGRAM_ARG)"
 
 profile_cpu: profile_cpu_gen
 	callgrind_annotate $(shell find . -type f -name callgrind.out*) --inclusive=yes --tree=both > profile_cpu.txt
 
-profile_mem_gen: profile_clean debug
+profile_mem_gen: debug
+	rm -f massif.out*
 	valgrind --tool=massif ./push_swap "$(PROGRAM_ARG)"
 
 profile_mem: profile_mem_gen
@@ -55,4 +54,4 @@ profile_mem: profile_mem_gen
 run_checker:
 	./push_swap "$(PROGRAM_ARG)" | ./checker_linux "$(PROGRAM_ARG)"
 
-.PHONY: all clean fclean re run libft run_checker debug profile_cpu profile_mem profile_clean profile_mem_gen profile_cpu_gen
+.PHONY: all clean fclean re run libft run_checker debug profile_cpu profile_mem profile_mem_gen profile_cpu_gen
