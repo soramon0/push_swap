@@ -4,3 +4,6 @@
 push_swap
 # libft archive
 src/libft/libft.a
+# valgrind profiling annotation files
+callgrind.out.*
+profile.txt

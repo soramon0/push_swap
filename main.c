@@ -15,7 +15,6 @@
 int	main(int argc, char *argv[])
 {
 	t_swapable	*area;
-	size_t		i;
 
 	if (argc != 2)
 		return (0);
@@ -25,11 +24,7 @@ int	main(int argc, char *argv[])
 		ft_putstr_fd("Error\n", 2);
 		return (0);
 	}
-	i = 0;
-	while (i < area->a->len)
-	{
-		printf("%d\n", area->a->data[i++]);
-	}
+	printf("we have a list of %zu random numbers\n", area->a->len);
 	swapable_free(area);
 	return (0);
 }
