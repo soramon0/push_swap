@@ -29,13 +29,13 @@ t_hash_table	*ft_create_hash_table(size_t keys_count)
 	t_hash_table	*ht;
 	size_t			i;
 
+	if (keys_count < 2)
+		keys_count = 2;
 	if (keys_count == 0)
 		return (NULL);
 	ht = malloc(sizeof(t_hash_table));
 	if (ht == NULL)
 		return (NULL);
-	if (keys_count < 2)
-		keys_count = 2;
 	ht->size = keys_count;
 	ht->keys = ft_calloc(keys_count, sizeof(t_list));
 	if (ht->keys == NULL)
