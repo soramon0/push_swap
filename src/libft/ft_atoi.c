@@ -18,10 +18,11 @@ int	ft_isspace(char c)
 		|| c == ' ');
 }
 
-int	ft_atoi(const char *nptr)
+int	ft_atoi(const char *nptr, int *num)
 {
 	int	r;
 	int	s;
+	int	prev;
 
 	r = 0;
 	s = 1;
@@ -34,6 +35,12 @@ int	ft_atoi(const char *nptr)
 		nptr++;
 	}
 	while (ft_isdigit(*nptr))
-		r = (r * 10) + (*nptr++ - '0');
-	return (r * s);
+	{
+		prev = r;
+		r = (r * 10) + (*nptr++ - '0') * s;
+		if (r / 10 != prev)
+			return (-1);
+	}
+	*num = r;
+	return (0);
 }

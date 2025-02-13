@@ -58,8 +58,7 @@ static size_t	append_item(int i, t_swapable *area, t_hash_table *map,
 		swapable_free(area);
 		return (-1);
 	}
-	num = ft_atoi(nums[i]);
-	if (ft_hash_table_exists(map, num) == 1)
+	if (ft_atoi(nums[i], &num) != 0 || ft_hash_table_exists(map, num) == 1)
 	{
 		ft_split_free(nums);
 		ft_hash_table_free(map);
@@ -81,7 +80,6 @@ static size_t	ft_split_size(char **nums)
 	return (i);
 }
 
-// (TODO): check overflow
 t_swapable	*create_swaparea(char *input)
 {
 	t_swapable		*area;
