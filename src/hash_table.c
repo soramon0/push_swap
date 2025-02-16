@@ -57,6 +57,8 @@ void	ft_hash_table_free(t_hash_table *ht)
 	t_ht_node	*node;
 	t_ht_node	*tmp;
 
+	if (ht == NULL)
+		return ;
 	i = 0;
 	while (i < ht->size)
 	{

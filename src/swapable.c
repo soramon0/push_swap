@@ -19,6 +19,8 @@ t_stack	*stack_init(size_t cap)
 	s = (t_stack *)malloc(sizeof(t_stack));
 	if (s == NULL)
 		return (NULL);
+	if (cap == 0)
+		cap = 1;
 	s->cap = cap;
 	s->len = 0;
 	s->data = ft_calloc(1, sizeof(int) * cap);
@@ -38,6 +40,34 @@ void	stack_free(t_stack *s)
 		}
 		free(s);
 	}
+}
+
+ssize_t	stack_push(t_stack *s, int num)
+{
+	int		*data;
+	size_t	i;
+	size_t	new_cap;
+
+	if (s->len == s->cap)
+	{
+		if (s->cap > SIZE_MAX / 2)
+			return (-1);
+		new_cap = s->cap * 2;
+		data = malloc(sizeof(int) * new_cap);
+		if (data == NULL)
+			return (-1);
+		i = 0;
+		while (i < s->len)
+		{
+			data[i] = s->data[i];
+			i++;
+		}
+		free(s->data);
+		s->data = data;
+		s->cap = new_cap;
+	}
+	s->data[s->len++] = num;
+	return (0);
 }
 
 void	swapable_free(t_swapable *area)

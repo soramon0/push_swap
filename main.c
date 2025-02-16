@@ -15,16 +15,21 @@
 int	main(int argc, char *argv[])
 {
 	t_swapable	*area;
+	size_t		i;
 
-	if (argc != 2)
-		return (0);
-	area = create_swaparea(argv[1]);
+	if (argc < 2)
+		return (1);
+	area = create_swaparea(++argv);
 	if (area == NULL)
 	{
 		ft_putstr_fd("Error\n", 2);
-		return (0);
+		return (1);
 	}
+	i = 0;
 	printf("we have a list of %zu random numbers\n", area->a->len);
+	while (i < area->a->len)
+		printf("%d ", area->a->data[i++]);
+	printf("\n");
 	swapable_free(area);
 	return (0);
 }

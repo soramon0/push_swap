@@ -16,12 +16,11 @@ char	**ft_split_free(char **arr)
 {
 	char	**t;
 
+	if (arr == NULL)
+		return (NULL);
 	t = arr;
-	while (t && *t)
-	{
-		free(*t);
-		t++;
-	}
+	while (*t != NULL)
+		free(*t++);
 	free(arr);
 	return (NULL);
 }
