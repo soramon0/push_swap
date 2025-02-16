@@ -28,7 +28,7 @@ static int	ft_isnum(char *str)
 			return (-1);
 		i++;
 	}
-	return (1);
+	return (0);
 }
 
 static size_t	append_items(t_swapable *area, t_hash_table *map, char **nums)
@@ -37,24 +37,19 @@ static size_t	append_items(t_swapable *area, t_hash_table *map, char **nums)
 	size_t	i;
 
 	i = 0;
+	if (nums[0] == NULL)
+		return (-1);
 	while (nums[i] != NULL)
 	{
 		if (ft_isnum(nums[i]) == -1)
-		{
-			ft_split_free(nums);
-			ft_hash_table_free(map);
-			swapable_free(area);
 			return (-1);
-		}
-		if (ft_atoi(nums[i], &num) != 0 || ft_hash_table_exists(map, num) == 1)
-		{
-			ft_split_free(nums);
-			ft_hash_table_free(map);
-			swapable_free(area);
+		if (ft_atoi(nums[i], &num) != 0)
 			return (-1);
-		}
+		if (ft_hash_table_exists(map, num) == 0)
+			return (-1);
+		if (stack_push(area->a, num) != 0)
+			return (-1);
 		ft_hash_table_insert(map, num);
-		stack_push(area->a, num);
 		i++;
 	}
 	return (0);
@@ -75,11 +70,11 @@ t_swapable	*create_swaparea(char **input)
 	while (*input)
 	{
 		nums = ft_split(*input, ' ');
-		if (nums == NULL || nums[0] == NULL)
+		if (nums == NULL)
+			return (ft_hash_table_free(map), swapable_free(area), NULL);
+		if (append_items(area, map, nums) != 0)
 			return (ft_split_free(nums), ft_hash_table_free(map),
 				swapable_free(area), NULL);
-		if (append_items(area, map, nums) != 0)
-			return (NULL);
 		ft_split_free(nums);
 		input++;
 	}

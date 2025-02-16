@@ -65,12 +65,12 @@ ssize_t	ft_hash_table_exists(t_hash_table *ht, int key)
 	if (ht->keys[idx] == NULL)
 		return (-1);
 	if (ht->keys[idx]->content == key)
-		return (1);
+		return (0);
 	node = ht->keys[idx]->next;
 	while (node != NULL)
 	{
 		if (node->content == key)
-			return (1);
+			return (0);
 		node = node->next;
 	}
 	return (-1);
