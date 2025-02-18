@@ -19,7 +19,7 @@ void	stack_swap(t_stack *a, t_stack *b, t_stack_target target)
 
 	if ((target == STACK_A && a->len < 2) || (target == STACK_B && b->len < 2))
 		return ;
-	if (target == STACK_A)
+	if (target == STACK_A || target == STACK_BOTH)
 	{
 		ft_putstr_fd("sa\n", 1);
 		src = a;
@@ -27,9 +27,11 @@ void	stack_swap(t_stack *a, t_stack *b, t_stack_target target)
 	else
 	{
 		ft_putstr_fd("sb\n", 1);
-		src = a;
+		src = b;
 	}
 	tmp = src->data[src->len - 1];
 	src->data[src->len - 1] = src->data[src->len - 2];
 	src->data[src->len - 2] = tmp;
+	if (target == STACK_BOTH)
+		stack_swap(a, b, STACK_B);
 }

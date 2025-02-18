@@ -47,6 +47,7 @@ typedef enum e_stack_target
 {
 	STACK_A,
 	STACK_B,
+	STACK_BOTH,
 }						t_stack_target;
 
 t_stack					*stack_init(size_t cap);
