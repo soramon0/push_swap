@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   stack_ops.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: klaayoun <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,27 +10,26 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "src/push_swap.h"
+#include "push_swap.h"
 
-int	main(int argc, char *argv[])
+void	stack_swap(t_stack *a, t_stack *b, t_stack_target target)
 {
-	t_swapable	*area;
+	int		tmp;
+	t_stack	*src;
 
-	if (argc < 2)
-		return (1);
-	area = create_swaparea(++argv);
-	if (area == NULL)
+	if ((target == STACK_A && a->len < 2) || (target == STACK_B && b->len < 2))
+		return ;
+	if (target == STACK_A)
 	{
-		ft_putstr_fd("Error\n", 2);
-		return (1);
+		ft_putstr_fd("sa\n", 1);
+		src = a;
 	}
-	printf("stack->len = %zu, stack->cap = %zu\n", area->a->len, area->a->cap);
-	printf("a[top]   -> %d\n", area->a->data[area->a->len - 1]);
-	printf("a[top-1] -> %d\n", area->a->data[area->a->len - 2]);
-	stack_swap(area->a, area->b, STACK_A);
-	printf("a[top]   -> %d\n", area->a->data[area->a->len - 1]);
-	printf("a[top-1] -> %d\n", area->a->data[area->a->len - 2]);
-	stack_swap(area->a, area->b, STACK_B);
-	swapable_free(area);
-	return (0);
+	else
+	{
+		ft_putstr_fd("sb\n", 1);
+		src = a;
+	}
+	tmp = src->data[src->len - 1];
+	src->data[src->len - 1] = src->data[src->len - 2];
+	src->data[src->len - 2] = tmp;
 }
