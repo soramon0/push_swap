@@ -20,14 +20,9 @@ int	main(int argc, char *argv[])
 		return (1);
 	area = create_swaparea(++argv);
 	if (area == NULL)
-	{
-		ft_putstr_fd("Error\n", 2);
-		return (1);
-	}
-	printf("stack_a->len = %zu, stack->cap = %zu\n", area->a->len,
-		area->a->cap);
-	printf("stack_b->len = %zu, stack->cap = %zu\n", area->b->len,
-		area->b->cap);
+		err_exit("Parsing failed\n", 2);
+	printf("a->len = %zu, a->cap = %zu\n", area->a->len, area->a->cap);
+	printf("b->len = %zu, b->cap = %zu\n", area->b->len, area->b->cap);
 	stack_do_op(area, OP_PB);
 	stack_do_op(area, OP_PB);
 	stack_do_op(area, OP_PA);
