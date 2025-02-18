@@ -12,26 +12,33 @@
 
 #include "push_swap.h"
 
+static void	swap(int *a, int *b)
+{
+	int	tmp;
+
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
+}
+
 void	stack_swap(t_stack *a, t_stack *b, t_stack_target target)
 {
-	int		tmp;
-	t_stack	*src;
-
-	if ((target == STACK_A && a->len < 2) || (target == STACK_B && b->len < 2))
-		return ;
-	if (target == STACK_A || target == STACK_BOTH)
+	if (target == STACK_A && a->len >= 2)
 	{
 		ft_putstr_fd("sa\n", 1);
-		src = a;
+		swap(a->data + a->len - 1, a->data + a->len - 2);
 	}
-	else
+	if (target == STACK_B && b->len >= 2)
 	{
 		ft_putstr_fd("sb\n", 1);
-		src = b;
+		swap(b->data + b->len - 1, b->data + b->len - 2);
 	}
-	tmp = src->data[src->len - 1];
-	src->data[src->len - 1] = src->data[src->len - 2];
-	src->data[src->len - 2] = tmp;
-	if (target == STACK_BOTH)
-		stack_swap(a, b, STACK_B);
+	if (target == STACK_BOTH && (a->len >= 2 || b->len >= 2))
+	{
+		ft_putstr_fd("ss\n", 1);
+		if (a->len >= 2)
+			swap(a->data + a->len - 1, a->data + a->len - 2);
+		if (b->len >= 2)
+			swap(b->data + b->len - 1, b->data + b->len - 2);
+	}
 }
