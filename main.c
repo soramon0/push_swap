@@ -26,6 +26,10 @@ int	main(int argc, char *argv[])
 	stack_do_op(area, OP_PB);
 	stack_do_op(area, OP_PB);
 	stack_do_op(area, OP_PA);
+	stack_do_op(area, OP_SA);
+	stack_do_op(area, OP_SA);
+	stack_do_op(area, OP_SB);
+	stack_do_op(area, OP_SS);
 	swapable_free(area);
 	return (0);
 }

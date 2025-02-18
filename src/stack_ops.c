@@ -67,5 +67,8 @@ void	stack_do_op(t_swapable *area, t_stack_op op)
 	if (op == OP_PA || op == OP_PB)
 		stack_push_op(area->a, area->b, op);
 	else
-		err_exit("swap_op: invalid OP(%s)\n", op_str(op));
+	{
+		swapable_free(area);
+		err_exit("do_op: invalid OP(%s)\n", op_str(op));
+	}
 }
