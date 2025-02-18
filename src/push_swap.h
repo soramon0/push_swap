@@ -14,6 +14,7 @@
 # define PUSH_SWAP_H
 
 # include "libft/libft.h"
+# include <stdarg.h>
 # include <stdint.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -48,13 +49,19 @@ typedef enum e_stack_op
 	OP_SA,
 	OP_SB,
 	OP_SS,
+	OP_PA,
+	OP_PB,
 }						t_stack_op;
+
+# ifndef LOG_DEBUG
+#  define LOG_DEBUG 0
+# endif
 
 t_stack					*stack_init(size_t cap);
 ssize_t					stack_push(t_stack *s, int num);
 ssize_t					stack_resize(t_stack *s, size_t cap);
-void					stack_swap_op(t_stack *a, t_stack *b,
-							t_stack_op op);
+void					stack_swap_op(t_stack *a, t_stack *b, t_stack_op op);
+void					stack_push_op(t_stack *a, t_stack *b, t_stack_op op);
 void					stack_free(t_stack *s);
 t_swapable				*swapable_init(size_t cap);
 void					swapable_free(t_swapable *area);

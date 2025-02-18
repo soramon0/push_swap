@@ -13,6 +13,7 @@
 #ifndef LIBFT_H
 # define LIBFT_H
 
+# include <stdarg.h>
 # include <stddef.h>
 # include <stdint.h>
 # include <stdlib.h>
@@ -50,5 +51,15 @@ void				ft_lstclear(t_list **lst, void (*del)(void *));
 void				ft_lstiter(t_list *lst, void (*f)(void *));
 t_list				*ft_lstmap(t_list *lst, void *(*f)(void *),
 						void (*del)(void *));
+
+int					ft_printf(const char *format, ...);
+int					ft_vprintf(va_list args, const char *format, ...);
+char				*ft_strchr(const char *s, int c);
+int					ft_putchr(char c);
+int					ft_putstr(char *s);
+int					ft_putnbr(int n);
+int					ft_putunbr(unsigned int n);
+int					ft_putnbr_hex(unsigned long num, int uppercase);
+int					ft_putptr(void *num);
 
 #endif

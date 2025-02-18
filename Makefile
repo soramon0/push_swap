@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g -D LOG_DEBUG=0
 EXTRA_FLAGS = 
 NAME = push_swap
 SRC = main.c $(shell find ./src -depth -maxdepth 1 -type f -name "*.c")
