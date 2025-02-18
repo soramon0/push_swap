@@ -23,6 +23,11 @@ static void	swap(int *a, int *b)
 
 void	stack_swap_op(t_stack *a, t_stack *b, t_stack_op op)
 {
+	if (op != OP_SA && op != OP_SB && op != OP_SS)
+	{
+		ft_putstr_fd("Error\n", 2);
+		exit(1);
+	}
 	if (op == OP_SA && a->len >= 2)
 	{
 		ft_putstr_fd("sa\n", 1);
