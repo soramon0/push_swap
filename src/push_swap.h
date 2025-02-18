@@ -60,9 +60,13 @@ typedef enum e_stack_op
 t_stack					*stack_init(size_t cap);
 ssize_t					stack_push(t_stack *s, int num);
 ssize_t					stack_resize(t_stack *s, size_t cap);
-void					stack_swap_op(t_stack *a, t_stack *b, t_stack_op op);
-void					stack_push_op(t_stack *a, t_stack *b, t_stack_op op);
 void					stack_free(t_stack *s);
+void					stack_do_op(t_swapable *area, t_stack_op op);
+void					err_exit(char *fmt, ...);
+void					stack_push_op(t_stack *a, t_stack *b, t_stack_op op);
+void					stack_do_op(t_swapable *area, t_stack_op op);
+void					swap_ints(int *a, int *b);
+char					*op_str(t_stack_op op);
 t_swapable				*swapable_init(size_t cap);
 void					swapable_free(t_swapable *area);
 t_swapable				*create_swaparea(char **input);

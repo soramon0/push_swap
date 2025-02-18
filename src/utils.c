@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: klaayoun <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,27 +10,51 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "src/push_swap.h"
+#include "push_swap.h"
 
-int	main(int argc, char *argv[])
+void	err_exit(char *fmt, ...)
 {
-	t_swapable	*area;
+	va_list	args;
 
-	if (argc < 2)
-		return (1);
-	area = create_swaparea(++argv);
-	if (area == NULL)
+	if (LOG_DEBUG == 1 && fmt != NULL)
 	{
-		ft_putstr_fd("Error\n", 2);
-		return (1);
+		va_start(args, fmt);
+		ft_vprintf(args, fmt);
+		va_end(args);
 	}
-	printf("stack_a->len = %zu, stack->cap = %zu\n", area->a->len,
-		area->a->cap);
-	printf("stack_b->len = %zu, stack->cap = %zu\n", area->b->len,
-		area->b->cap);
-	stack_do_op(area, OP_PB);
-	stack_do_op(area, OP_PB);
-	stack_do_op(area, OP_PA);
-	swapable_free(area);
-	return (0);
+	ft_putstr_fd("Error\n", 2);
+	exit(1);
+}
+
+void	swap_ints(int *a, int *b)
+{
+	int	tmp;
+
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
+}
+
+char	*op_str(t_stack_op op)
+{
+	static char	*str;
+
+	str = NULL;
+	if (op == 0)
+		str = "sa";
+	if (op == 1)
+		str = "sb";
+	if (op == 2)
+		str = "ss";
+	if (op == 3)
+		str = "pa";
+	if (op == 4)
+		str = "pb";
+	if (op == 5)
+		str = "ra";
+	if (op == 6)
+		str = "rb";
+	if (op == 7)
+		str = "rr";
+	return (str);
 }
