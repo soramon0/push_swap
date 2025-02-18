@@ -43,18 +43,18 @@ typedef struct s_swapable
 	t_stack				*b;
 }						t_swapable;
 
-typedef enum e_stack_action
+typedef enum e_stack_op
 {
-	STACK_SA,
-	STACK_SB,
-	STACK_SS,
-}						t_stack_action;
+	OP_SA,
+	OP_SB,
+	OP_SS,
+}						t_stack_op;
 
 t_stack					*stack_init(size_t cap);
 ssize_t					stack_push(t_stack *s, int num);
 ssize_t					stack_resize(t_stack *s, size_t cap);
-void					stack_swap(t_stack *a, t_stack *b,
-							t_stack_action action);
+void					stack_swap_op(t_stack *a, t_stack *b,
+							t_stack_op op);
 void					stack_free(t_stack *s);
 t_swapable				*swapable_init(size_t cap);
 void					swapable_free(t_swapable *area);

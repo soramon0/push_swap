@@ -28,13 +28,13 @@ int	main(int argc, char *argv[])
 	printf("stack_b->len = %zu, stack->cap = %zu\n", area->b->len, area->b->cap);
 	printf("a[top]   -> %d\n", area->a->data[area->a->len - 1]);
 	printf("a[top-1] -> %d\n", area->a->data[area->a->len - 2]);
-	stack_swap(area->a, area->b, STACK_SA);
+	stack_swap_op(area->a, area->b, STACK_SA);
 	printf("a[top]   -> %d\n", area->a->data[area->a->len - 1]);
 	printf("a[top-1] -> %d\n", area->a->data[area->a->len - 2]);
-	stack_swap(area->a, area->b, STACK_SB);
+	stack_swap_op(area->a, area->b, STACK_SB);
 	printf("b[top]   -> %d\n", area->b->data[area->b->len - 1]);
 	printf("b[top-1] -> %d\n", area->b->data[area->b->len - 2]);
-	stack_swap(area->a, area->b, STACK_SS);
+	stack_swap_op(area->a, area->b, STACK_SS);
 	printf("a[top]   -> %d\n", area->a->data[area->a->len - 1]);
 	printf("a[top-1] -> %d\n", area->a->data[area->a->len - 2]);
 	printf("b[top]   -> %d\n", area->b->data[area->b->len - 1]);

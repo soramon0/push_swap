@@ -21,19 +21,19 @@ static void	swap(int *a, int *b)
 	*b = tmp;
 }
 
-void	stack_swap(t_stack *a, t_stack *b, t_stack_action action)
+void	stack_swap_op(t_stack *a, t_stack *b, t_stack_op op)
 {
-	if (action == STACK_SA && a->len >= 2)
+	if (op == STACK_SA && a->len >= 2)
 	{
 		ft_putstr_fd("sa\n", 1);
 		swap(a->data + a->len - 1, a->data + a->len - 2);
 	}
-	if (action == STACK_SA && b->len >= 2)
+	if (op == STACK_SA && b->len >= 2)
 	{
 		ft_putstr_fd("sb\n", 1);
 		swap(b->data + b->len - 1, b->data + b->len - 2);
 	}
-	if (action == STACK_SS && (a->len >= 2 || b->len >= 2))
+	if (op == STACK_SS && (a->len >= 2 || b->len >= 2))
 	{
 		ft_putstr_fd("ss\n", 1);
 		if (a->len >= 2)
