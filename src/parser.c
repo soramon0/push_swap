@@ -79,5 +79,7 @@ t_swapable	*create_swaparea(char **input)
 		input++;
 	}
 	ft_hash_table_free(map);
+	if (stack_resize(area->b, area->a->cap) != 0)
+		return (swapable_free(area), NULL);
 	return (area);
 }

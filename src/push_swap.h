@@ -45,6 +45,7 @@ typedef struct s_swapable
 
 t_stack					*stack_init(size_t cap);
 ssize_t					stack_push(t_stack *s, int num);
+ssize_t					stack_resize(t_stack *s, size_t cap);
 void					stack_free(t_stack *s);
 t_swapable				*swapable_init(size_t cap);
 void					swapable_free(t_swapable *area);
