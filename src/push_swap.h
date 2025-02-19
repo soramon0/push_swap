@@ -51,6 +51,12 @@ typedef enum e_stack_op
 	OP_SS,
 	OP_PA,
 	OP_PB,
+	OP_RA,
+	OP_RB,
+	OP_RR,
+	OP_RRA,
+	OP_RRB,
+	OP_RRR,
 }						t_stack_op;
 
 # ifndef LOG_DEBUG

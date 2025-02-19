@@ -71,6 +71,6 @@ ssize_t	stack_do_op(t_swapable *area, t_stack_op op)
 			return (debug_msg("push_op(%s): failed\n", op_str(op)), -1);
 		return (0);
 	}
-	debug_msg("do_op(%s): invalid op\n", op_str(op));
+	debug_msg("do_op(%s): invalid OP(%d)\n", op_str(op), op);
 	return (-1);
 }
