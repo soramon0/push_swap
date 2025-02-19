@@ -68,11 +68,17 @@ ssize_t	stack_resize(t_stack *s, size_t cap)
 
 ssize_t	stack_push(t_stack *s, int num)
 {
+	ssize_t	new_cap;
+
 	if (s->len == s->cap)
 	{
-		if (s->cap > SIZE_MAX / 2)
+		if (s->cap == SIZE_MAX)
 			return (-1);
-		if (stack_resize(s, s->cap * 2) != 0)
+		if (s->cap > SIZE_MAX / 2)
+			new_cap = SIZE_MAX;
+		else
+			new_cap = s->cap * 2;
+		if (stack_resize(s, new_cap) != 0)
 			return (-1);
 	}
 	s->data[s->len++] = num;
