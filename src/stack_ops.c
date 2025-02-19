@@ -34,7 +34,7 @@ void	stack_swap_op(t_stack *a, t_stack *b, t_stack_op op)
 	}
 }
 
-void	stack_push_op(t_stack *a, t_stack *b, t_stack_op op)
+ssize_t	stack_push_op(t_stack *a, t_stack *b, t_stack_op op)
 {
 	t_stack	*src;
 	t_stack	*dst;
@@ -54,21 +54,23 @@ void	stack_push_op(t_stack *a, t_stack *b, t_stack_op op)
 	if (src != NULL && dst != NULL)
 	{
 		if (stack_push(dst, src->data[src->len - 1]) != 0)
-			err_exit("push_op: push failed using OP(%s)\n", op_str(op));
+			return (-1);
 		ft_printf("%s\n", op_str(op));
 		src->len--;
 	}
+	return (0);
 }
 
-void	stack_do_op(t_swapable *area, t_stack_op op)
+ssize_t	stack_do_op(t_swapable *area, t_stack_op op)
 {
 	if (op == OP_SA || op == OP_SB || op == OP_SS)
-		stack_swap_op(area->a, area->b, op);
+		return (stack_swap_op(area->a, area->b, op), 0);
 	if (op == OP_PA || op == OP_PB)
-		stack_push_op(area->a, area->b, op);
-	else
 	{
-		swapable_free(area);
-		err_exit("do_op: invalid OP(%s)\n", op_str(op));
+		if (stack_push_op(area->a, area->b, op) != 0)
+			return (debug_msg("push_op(%s): failed\n", op_str(op)), -1);
+		return (0);
 	}
+	debug_msg("do_op(%s): invalid op\n", op_str(op));
+	return (-1);
 }

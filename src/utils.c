@@ -26,6 +26,18 @@ void	err_exit(char *fmt, ...)
 	exit(1);
 }
 
+void	debug_msg(char *fmt, ...)
+{
+	va_list	args;
+
+	if (LOG_DEBUG == 1 && fmt != NULL)
+	{
+		va_start(args, fmt);
+		ft_vprintf(args, fmt);
+		va_end(args);
+	}
+}
+
 void	swap_ints(int *a, int *b)
 {
 	int	tmp;
