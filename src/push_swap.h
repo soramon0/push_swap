@@ -59,6 +59,14 @@ typedef enum e_stack_op
 	OP_RRR,
 }						t_stack_op;
 
+typedef ssize_t			t_op_func(t_stack *a, t_stack *b, t_stack_op op);
+
+typedef struct s_op_table
+{
+	char				*name;
+	t_op_func			*method;
+}						t_op_table;
+
 # ifndef LOG_DEBUG
 #  define LOG_DEBUG 0
 # endif
@@ -67,9 +75,11 @@ t_stack					*stack_init(size_t cap);
 ssize_t					stack_push(t_stack *s, int num);
 ssize_t					stack_resize(t_stack *s, size_t cap);
 void					stack_free(t_stack *s);
+t_op_table				*stack_op_table_init(void);
 ssize_t					stack_do_op(t_swapable *area, t_stack_op op);
 ssize_t					stack_push_op(t_stack *a, t_stack *b, t_stack_op op);
-void					stack_swap_op(t_stack *a, t_stack *b, t_stack_op op);
+ssize_t					stack_swap_op(t_stack *a, t_stack *b, t_stack_op op);
+ssize_t					stack_rotate_op(t_stack *a, t_stack *b, t_stack_op op);
 void					err_exit(char *fmt, ...);
 void					debug_msg(char *fmt, ...);
 void					swap_ints(int *a, int *b);

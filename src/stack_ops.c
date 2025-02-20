@@ -12,7 +12,7 @@
 
 #include "push_swap.h"
 
-void	stack_swap_op(t_stack *a, t_stack *b, t_stack_op op)
+ssize_t	stack_swap_op(t_stack *a, t_stack *b, t_stack_op op)
 {
 	if (op == OP_SA && a->len >= 2)
 	{
@@ -32,6 +32,7 @@ void	stack_swap_op(t_stack *a, t_stack *b, t_stack_op op)
 		if (b->len >= 2)
 			swap_ints(b->data + b->len - 1, b->data + b->len - 2);
 	}
+	return (0);
 }
 
 ssize_t	stack_push_op(t_stack *a, t_stack *b, t_stack_op op)
@@ -61,16 +62,10 @@ ssize_t	stack_push_op(t_stack *a, t_stack *b, t_stack_op op)
 	return (0);
 }
 
-ssize_t	stack_do_op(t_swapable *area, t_stack_op op)
+ssize_t	stack_rotate_op(t_stack *a, t_stack *b, t_stack_op op)
 {
-	if (op == OP_SA || op == OP_SB || op == OP_SS)
-		return (stack_swap_op(area->a, area->b, op), 0);
-	if (op == OP_PA || op == OP_PB)
-	{
-		if (stack_push_op(area->a, area->b, op) != 0)
-			return (debug_msg("push_op(%s): failed\n", op_str(op)), -1);
-		return (0);
-	}
-	debug_msg("do_op(%s): invalid OP(%d)\n", op_str(op), op);
+	(void)a;
+	(void)b;
+	(void)op;
 	return (-1);
 }
