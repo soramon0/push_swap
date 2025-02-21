@@ -26,17 +26,35 @@ ssize_t	is_sorted(t_stack *s)
 	return (0);
 }
 
+void	bubble_sort(t_swapable *area)
+{
+	ssize_t	i;
+	int		is_sorted;
+
+	is_sorted = 0;
+	while (!is_sorted)
+	{
+		is_sorted = 1;
+		i = area->a->len - 1;
+		while (i >= 1)
+		{
+			if (area->a->data[i] > area->a->data[i - 1])
+			{
+				swap_ints(area->a->data + i, area->a->data + (i - 1));
+				is_sorted = 0;
+			}
+			i--;
+		}
+	}
+}
+
 ssize_t	sort(t_swapable *area)
 {
 	stack_print(area->a);
 	stack_print(area->b);
 	if (is_sorted(area->a) == 0)
 		return (0);
-	stack_do_op(area, OP_RRA);
-	stack_do_op(area, OP_PB);
-	stack_do_op(area, OP_SA);
-	stack_do_op(area, OP_RRA);
-	stack_do_op(area, OP_PA);
+	bubble_sort(area);
 	stack_print(area->a);
 	stack_print(area->b);
 	return (0);
