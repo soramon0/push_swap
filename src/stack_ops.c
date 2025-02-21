@@ -19,7 +19,7 @@ ssize_t	stack_swap_op(t_stack *a, t_stack *b, t_stack_op op)
 		ft_printf("%s\n", op_str(op));
 		swap_ints(a->data + a->len - 1, a->data + a->len - 2);
 	}
-	if (op == OP_SA && b->len >= 2)
+	if (op == OP_SB && b->len >= 2)
 	{
 		ft_printf("%s\n", op_str(op));
 		swap_ints(b->data + b->len - 1, b->data + b->len - 2);

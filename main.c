@@ -21,14 +21,33 @@ int	main(int argc, char *argv[])
 	area = create_swaparea(++argv);
 	if (area == NULL)
 		err_exit("Parsing failed\n", 2);
-	while (area->b->len < area->a->len)
-	{
-		area->b->data[area->b->len] = area->a->data[area->b->len];
-		area->b->len++;
-	}
+	// while (area->b->len < area->a->len)
+	// {
+	// 	area->b->data[area->b->len] = area->a->data[area->b->len];
+	// 	area->b->len++;
+	// }
+	stack_print(area->a);
+	stack_print(area->b);
+	stack_do_op(area, OP_SA);
+	stack_print(area->a);
+	stack_print(area->b);
+	stack_do_op(area, OP_PB);
+	stack_do_op(area, OP_PB);
+	stack_do_op(area, OP_PB);
+	stack_print(area->a);
+	stack_print(area->b);
+	stack_do_op(area, OP_RR);
 	stack_print(area->a);
 	stack_print(area->b);
 	stack_do_op(area, OP_RRR);
+	stack_print(area->a);
+	stack_print(area->b);
+	stack_do_op(area, OP_SA);
+	stack_print(area->a);
+	stack_print(area->b);
+	stack_do_op(area, OP_PA);
+	stack_do_op(area, OP_PA);
+	stack_do_op(area, OP_PA);
 	stack_print(area->a);
 	stack_print(area->b);
 	swapable_free(area);
