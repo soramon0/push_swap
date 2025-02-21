@@ -16,7 +16,6 @@
 # include "libft/libft.h"
 # include <stdarg.h>
 # include <stdint.h>
-# include <stdio.h>
 # include <stdlib.h>
 
 typedef struct s_ht_node
@@ -72,6 +71,7 @@ typedef struct s_op_table
 # endif
 
 t_stack					*stack_init(size_t cap);
+void					stack_print(t_stack *s);
 ssize_t					stack_push(t_stack *s, int num);
 ssize_t					stack_resize(t_stack *s, size_t cap);
 void					stack_free(t_stack *s);

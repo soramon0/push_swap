@@ -21,15 +21,19 @@ int	main(int argc, char *argv[])
 	area = create_swaparea(++argv);
 	if (area == NULL)
 		err_exit("Parsing failed\n", 2);
-	printf("a->len = %zu, a->cap = %zu\n", area->a->len, area->a->cap);
-	printf("b->len = %zu, b->cap = %zu\n", area->b->len, area->b->cap);
+	stack_print(area->a);
+	stack_print(area->b);
 	stack_do_op(area, OP_PB);
 	stack_do_op(area, OP_PB);
-	stack_do_op(area, OP_PA);
-	stack_do_op(area, OP_SA);
-	stack_do_op(area, OP_SA);
-	stack_do_op(area, OP_SB);
-	stack_do_op(area, OP_SS);
+	stack_do_op(area, OP_PB);
+	stack_do_op(area, OP_PB);
+	stack_do_op(area, OP_PB);
+	stack_do_op(area, OP_PB);
+	stack_print(area->a);
+	stack_print(area->b);
+	stack_do_op(area, OP_RB);
+	stack_print(area->a);
+	stack_print(area->b);
 	swapable_free(area);
 	return (0);
 }

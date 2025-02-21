@@ -20,7 +20,7 @@ t_stack	*stack_init(size_t cap)
 	if (s == NULL)
 		return (NULL);
 	if (cap == 0)
-		cap = 1;
+		cap = 8;
 	s->cap = cap;
 	s->len = 0;
 	s->data = ft_calloc(1, sizeof(int) * cap);
@@ -83,4 +83,19 @@ ssize_t	stack_push(t_stack *s, int num)
 	}
 	s->data[s->len++] = num;
 	return (0);
+}
+
+void	stack_print(t_stack *s)
+{
+	ssize_t	i;
+
+	i = (ssize_t)s->len - 1;
+	ft_printf("len = %d, cap = %d\n", s->len, s->cap);
+	ft_printf("[ ");
+	while (i >= 0)
+	{
+		ft_printf("%d ", s->data[i]);
+		i--;
+	}
+	ft_printf("]\n");
 }

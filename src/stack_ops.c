@@ -64,8 +64,23 @@ ssize_t	stack_push_op(t_stack *a, t_stack *b, t_stack_op op)
 
 ssize_t	stack_rotate_op(t_stack *a, t_stack *b, t_stack_op op)
 {
-	(void)a;
-	(void)b;
-	(void)op;
-	return (-1);
+	size_t	start;
+	size_t	end;
+	t_stack	*src;
+
+	src = NULL;
+	if (op == OP_RA && a->len > 1)
+		src = a;
+	if (op == OP_RB && b->len > 1)
+		src = b;
+	if (src != NULL)
+	{
+		start = src->len - 2;
+		end = src->len - 1;
+		while (start < end)
+			swap_ints(src->data + start--, src->data + end--);
+		ft_printf("%s\n", op_str(op));
+		return (0);
+	}
+	return (0);
 }
