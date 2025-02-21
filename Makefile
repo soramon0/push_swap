@@ -37,6 +37,9 @@ run: debug
 debug: $(LIBFT_NAME) $(OBJ)
 	$(CC) $(CFLAGS) $(EXTRA_FLAGS) $(OBJ) $(LIBFT_NAME) -o $(NAME)
 
+leaks: $(NAME)
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./push_swap "$(PROGRAM_ARG)"
+
 profile_cpu_gen: debug
 	valgrind --tool=callgrind --dump-instr=yes --collect-jumps=yes ./push_swap "$(PROGRAM_ARG)"
 
@@ -52,4 +55,4 @@ profile_mem: profile_mem_gen
 run_checker:
 	./push_swap "$(PROGRAM_ARG)" | ./checker_linux "$(PROGRAM_ARG)"
 
-.PHONY: all clean fclean re run libft run_checker debug profile_cpu profile_mem profile_mem_gen profile_cpu_gen
+.PHONY: all clean fclean re run libft run_checker debug profile_cpu profile_mem profile_mem_gen profile_cpu_gen leaks

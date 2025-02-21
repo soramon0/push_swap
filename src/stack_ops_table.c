@@ -12,6 +12,41 @@
 
 #include "push_swap.h"
 
+char	*op_r_str(t_stack_op op, char *str)
+{
+	if (op == 5)
+		str = "ra";
+	if (op == 6)
+		str = "rb";
+	if (op == 7)
+		str = "rr";
+	if (op == 8)
+		str = "rra";
+	if (op == 9)
+		str = "rrb";
+	if (op == 10)
+		str = "rrr";
+	return (str);
+}
+
+char	*op_str(t_stack_op op)
+{
+	static char	*str;
+
+	str = "unknown";
+	if (op == 0)
+		str = "sa";
+	if (op == 1)
+		str = "sb";
+	if (op == 2)
+		str = "ss";
+	if (op == 3)
+		str = "pa";
+	if (op == 4)
+		str = "pb";
+	return (op_r_str(op, str));
+}
+
 t_op_table	*stack_op_table_init(void)
 {
 	static t_op_table	table[11];
@@ -24,9 +59,9 @@ t_op_table	*stack_op_table_init(void)
 	table[OP_RA] = (t_op_table){"rotate_op", &stack_rotate_op};
 	table[OP_RB] = (t_op_table){"rotate_op", &stack_rotate_op};
 	table[OP_RR] = (t_op_table){"rotate_op", &stack_rotate_op};
-	table[OP_RRA] = (t_op_table){"rrotate_op", NULL};
-	table[OP_RRB] = (t_op_table){"rrotate_op", NULL};
-	table[OP_RRR] = (t_op_table){"rrotate_op", NULL};
+	table[OP_RRA] = (t_op_table){"rotate_op", &stack_rotate_op};
+	table[OP_RRB] = (t_op_table){"rotate_op", &stack_rotate_op};
+	table[OP_RRR] = (t_op_table){"rotate_op", &stack_rotate_op};
 	return (table);
 }
 

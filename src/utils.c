@@ -47,37 +47,22 @@ void	swap_ints(int *a, int *b)
 	*b = tmp;
 }
 
-char	*op_r_str(t_stack_op op, char *str)
+void	shift_ints(t_stack *s, int dirction)
 {
-	if (op == 5)
-		str = "ra";
-	if (op == 6)
-		str = "rb";
-	if (op == 7)
-		str = "rr";
-	if (op == 8)
-		str = "rra";
-	if (op == 9)
-		str = "rrb";
-	if (op == 10)
-		str = "rrr";
-	return (str);
-}
+	size_t	start;
 
-char	*op_str(t_stack_op op)
-{
-	static char	*str;
-
-	str = "unknown";
-	if (op == 0)
-		str = "sa";
-	if (op == 1)
-		str = "sb";
-	if (op == 2)
-		str = "ss";
-	if (op == 3)
-		str = "pa";
-	if (op == 4)
-		str = "pb";
-	return (op_r_str(op, str));
+	if (dirction == 1)
+		start = s->len - 1;
+	else
+		start = 0;
+	while (start >= 1 && dirction == 1)
+	{
+		swap_ints(s->data + (start - 1), s->data + start);
+		start--;
+	}
+	while (start < s->len - 1 && dirction != 1)
+	{
+		swap_ints(s->data + (start + 1), s->data + start);
+		start++;
+	}
 }

@@ -83,6 +83,7 @@ ssize_t					stack_rotate_op(t_stack *a, t_stack *b, t_stack_op op);
 void					err_exit(char *fmt, ...);
 void					debug_msg(char *fmt, ...);
 void					swap_ints(int *a, int *b);
+void					shift_ints(t_stack *s, int dirction);
 char					*op_str(t_stack_op op);
 t_swapable				*swapable_init(size_t cap);
 void					swapable_free(t_swapable *area);
