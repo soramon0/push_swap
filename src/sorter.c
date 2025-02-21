@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   swapable.c                                         :+:      :+:    :+:   */
+/*   sorter.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: klaayoun <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,41 +12,32 @@
 
 #include "push_swap.h"
 
-void	swapable_free(t_swapable *area)
-{
-	if (area != NULL)
-	{
-		stack_free(area->a);
-		stack_free(area->b);
-		area->a = NULL;
-		area->b = NULL;
-		free(area);
-	}
-}
-
-t_swapable	*swapable_init(size_t cap)
-{
-	t_swapable	*area;
-
-	area = malloc(sizeof(t_swapable));
-	if (area == NULL)
-		return (NULL);
-	area->a = stack_init(cap);
-	if (area->a == NULL)
-		return (swapable_free(area), NULL);
-	area->b = stack_init(cap);
-	if (area->b == NULL)
-		return (swapable_free(area), NULL);
-	return (area);
-}
-
-void	stack_reverse(t_stack *s)
+ssize_t	is_sorted(t_stack *s)
 {
 	size_t	start;
-	size_t	end;
 
-	start = 0;
-	end = s->len - 1;
-	while (start < end)
-		swap_ints(s->data + start++, s->data + end--);
+	start = s->len - 1;
+	while (start >= 1)
+	{
+		if (s->data[start] > s->data[start - 1])
+			return (-1);
+		start--;
+	}
+	return (0);
+}
+
+ssize_t	sort(t_swapable *area)
+{
+	stack_print(area->a);
+	stack_print(area->b);
+	if (is_sorted(area->a) == 0)
+		return (0);
+	stack_do_op(area, OP_RRA);
+	stack_do_op(area, OP_PB);
+	stack_do_op(area, OP_SA);
+	stack_do_op(area, OP_RRA);
+	stack_do_op(area, OP_PA);
+	stack_print(area->a);
+	stack_print(area->b);
+	return (0);
 }

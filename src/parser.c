@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
 #include "push_swap.h"
 
 static int	ft_isnum(char *str)
@@ -61,11 +60,9 @@ t_swapable	*create_swaparea(char **input)
 	char			**nums;
 	t_hash_table	*map;
 
-	map = ft_create_hash_table(507);
-	if (map == NULL)
-		return (NULL);
+	map = ft_create_hash_table(128);
 	area = swapable_init(64);
-	if (area == NULL)
+	if (area == NULL || map == NULL)
 		return (ft_hash_table_free(map), NULL);
 	while (*input)
 	{
@@ -81,5 +78,6 @@ t_swapable	*create_swaparea(char **input)
 	ft_hash_table_free(map);
 	if (stack_resize(area->b, area->a->cap) != 0)
 		return (swapable_free(area), NULL);
+	stack_reverse(area->a);
 	return (area);
 }

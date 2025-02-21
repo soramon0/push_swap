@@ -90,12 +90,12 @@ void	stack_print(t_stack *s)
 	ssize_t	i;
 
 	i = (ssize_t)s->len - 1;
-	ft_printf("len = %d, cap = %d\n", s->len, s->cap);
-	ft_printf("[ ");
+	debug_msg("len = %d, cap = %d\n", s->len, s->cap);
+	debug_msg("[ ");
 	while (i >= 0)
 	{
 		ft_printf("%d ", s->data[i]);
 		i--;
 	}
-	ft_printf("]\n");
+	debug_msg("]\n");
 }

@@ -80,6 +80,8 @@ ssize_t					stack_do_op(t_swapable *area, t_stack_op op);
 ssize_t					stack_push_op(t_stack *a, t_stack *b, t_stack_op op);
 ssize_t					stack_swap_op(t_stack *a, t_stack *b, t_stack_op op);
 ssize_t					stack_rotate_op(t_stack *a, t_stack *b, t_stack_op op);
+ssize_t					sort(t_swapable *area);
+void					stack_reverse(t_stack *s);
 void					err_exit(char *fmt, ...);
 void					debug_msg(char *fmt, ...);
 void					swap_ints(int *a, int *b);
