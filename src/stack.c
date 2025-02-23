@@ -94,7 +94,7 @@ void	stack_print(t_stack *s)
 	debug_msg("[ ");
 	while (i >= 0)
 	{
-		ft_printf("%d ", s->data[i]);
+		debug_msg("%d ", s->data[i]);
 		i--;
 	}
 	debug_msg("]\n");
