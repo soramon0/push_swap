@@ -12,17 +12,11 @@
 
 #include "push_swap.h"
 
-static int	max(int num1, int num2)
-{
-	if (num1 > num2)
-		return (num1);
-	return (num2);
-}
-
-static int	*init_lis(size_t size)
+int	*lis_gen(int data[], size_t size)
 {
 	int		*lis;
-	size_t	i;
+	ssize_t	i;
+	ssize_t	j;
 
 	if (size == 0)
 		return (NULL);
@@ -30,12 +24,24 @@ static int	*init_lis(size_t size)
 	if (lis == NULL)
 		return (NULL);
 	i = 0;
-	while (i < size)
+	while (i < (ssize_t)size)
 		lis[i++] = 1;
+	i = size - 1;
+	while (i >= 0)
+	{
+		j = size - 1;
+		while (j > i)
+		{
+			if (data[i] < data[j] && lis[i] < lis[j] + 1)
+				lis[i] = lis[j] + 1;
+			j--;
+		}
+		i--;
+	}
 	return (lis);
 }
 
-static ssize_t	lis_max(int lis[], size_t size, int *pos)
+static size_t	lis_max(int lis[], size_t size, size_t *pos)
 {
 	ssize_t	i;
 	size_t	len;
@@ -54,62 +60,47 @@ static ssize_t	lis_max(int lis[], size_t size, int *pos)
 	return (len);
 }
 
-int	*lis_length(int data[], size_t size)
+void	fill_lis_stack(t_stack *s, int data[], int lis[], size_t size)
 {
-	int		*lis;
-	ssize_t	len;
-	ssize_t	i;
-	ssize_t	j;
-	int pos;
+	size_t	pos;
+	size_t	i;
+	size_t	j;
 
-	lis = init_lis(size);
-	if (lis == NULL)
-		return (NULL);
-	len = 1;
-	i = size - 1;
-	while (i >= 0)
-	{
-		j = size - 1;
-		while (j > i)
-		{
-			if (data[i] < data[j])
-				lis[i] = max(lis[i], lis[j] + 1);
-			j--;
-		}
-		i--;
-	}
-	pos = 0;
-	len = lis_max(lis, size, &pos);
-	int *r = malloc(sizeof(int) * len);
-	i = pos;
-	j = 0;
-	debug_msg("pos = %d\n", pos);
-	while (j < len)
-	{
-		r[j] = data[i];
-		size_t k = i + 1;
-		while (k < size)
-		{
-			if (lis[k] == lis[i] - 1 && data[k] > data[i])
-			{
-				i = k;
-				break;
-			}
-			k++;
-		}
-		j++;
-	}
 	i = 0;
-	while (i < (ssize_t)size)
+	pos = 0;
+	lis_max(lis, size, &pos);
+	while (i < s->len)
 	{
-		debug_msg("data = %d lis = %d\n", data[i], lis[i]);
+		s->data[i] = data[pos];
+		j = pos + 1;
+		while (j < size)
+		{
+			if (lis[j] == lis[pos] - 1 && data[j] > data[pos])
+			{
+				pos = j;
+				break ;
+			}
+			j++;
+		}
 		i++;
 	}
-	i = 0;
-	while (i < len)
-	{
-		debug_msg("%d\n", r[i++]);
-	}
+}
+
+t_stack	*lis_length(int data[], size_t size)
+{
+	t_stack	*s;
+	int		*lis;
+	size_t	pos;
+
+	lis = lis_gen(data, size);
+	if (lis == NULL)
+		return (NULL);
+	pos = 0;
+	s = stack_init(lis_max(lis, size, &pos));
+	if (s == NULL)
+		return (free(lis), NULL);
+	s->len = s->cap;
+	fill_lis_stack(s, data, lis, size);
 	free(lis);
-	return (r);
+	return (s);
 }
