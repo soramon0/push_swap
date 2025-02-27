@@ -48,15 +48,49 @@ void	bubble_sort(t_swapable *area)
 	}
 }
 
+int	find_lis(t_stack *s, int num)
+{
+	size_t	i;
+	int		found;
+
+	i = 0;
+	found = 0;
+	while (i < s->len)
+	{
+		if (s->data[i] == num)
+		{
+			found = 1;
+			break ;
+		}
+		i++;
+	}
+	return (found);
+}
+
 ssize_t	sort(t_swapable *area)
 {
+	t_stack	*lis;
+	size_t	diff;
+
 	stack_print(area->a);
 	stack_print(area->b);
-	stack_print(lis_length(area->a->data, area->a->len));
 	if (area->a->len <= 1 || is_sorted(area->a) == 0)
 		return (0);
+	lis = create_lis_stack(area->a);
+	stack_print(lis);
+	diff = area->a->len - lis->len;
+	while (diff > 0)
+	{
+		if (find_lis(lis, area->a->data[area->a->len - 1]) == 0)
+		{
+			stack_do_op(area, OP_PB);
+			diff--;
+		}
+		stack_do_op(area, OP_RA);
+	}
 	bubble_sort(area);
 	stack_print(area->a);
 	stack_print(area->b);
+	debug_msg("Ops done = %d\n", area->ops_done);
 	return (0);
 }

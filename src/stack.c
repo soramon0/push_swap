@@ -94,8 +94,13 @@ void	stack_print(t_stack *s)
 		debug_msg("stack = NULL\n");
 		return ;
 	}
-	i = (ssize_t)s->len - 1;
 	debug_msg("stack(%x) = %d/%d\n", s, s->len, s->cap);
+	if (s->len == 0)
+	{
+		debug_msg("[]\n");
+		return ;
+	}
+	i = (ssize_t)s->len - 1;
 	while (i >= 0)
 	{
 		debug_msg("| %d\t|\n", s->data[i]);

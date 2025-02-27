@@ -68,7 +68,9 @@ t_op_table	*stack_op_table_init(void)
 ssize_t	stack_do_op(t_swapable *area, t_stack_op op)
 {
 	t_op_table	*table;
+	ssize_t		ops_done;
 
+	ops_done = area->ops_done;
 	if (op < OP_SA || op > OP_RRR)
 	{
 		debug_msg("do_op(%s): out of range OP(%d)\n", op_str(op), op);
@@ -80,10 +82,12 @@ ssize_t	stack_do_op(t_swapable *area, t_stack_op op)
 		debug_msg("%s(%s): not implemented \n", table[op].name, op_str(op));
 		return (-1);
 	}
-	if (table[op].method(area->a, area->b, op) != 0)
+	ops_done = table[op].method(area->a, area->b, op);
+	if (ops_done == -1)
 	{
 		debug_msg("%s(%s): failed\n", table[op].name, op_str(op));
 		return (-1);
 	}
+	area->ops_done += ops_done;
 	return (0);
 }

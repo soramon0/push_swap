@@ -12,7 +12,7 @@
 
 #include "push_swap.h"
 
-int	*lis_gen(int data[], size_t size)
+int	*save_seqs(int data[], size_t size)
 {
 	int		*lis;
 	ssize_t	i;
@@ -41,41 +41,40 @@ int	*lis_gen(int data[], size_t size)
 	return (lis);
 }
 
-static size_t	lis_max(int lis[], size_t size, size_t *pos)
+static void	lis_cal_max(t_lis *lis)
 {
 	ssize_t	i;
-	size_t	len;
 
-	i = size - 1;
-	len = 0;
+	i = lis->seq_size - 1;
+	lis->max = 0;
 	while (i >= 0)
 	{
-		if (lis[i] > (int)len)
+		if (lis->seq_count[i] > lis->max)
 		{
-			len = lis[i];
-			*pos = i;
+			lis->max = lis->seq_count[i];
+			lis->max_pos = i;
 		}
 		i--;
 	}
-	return (len);
 }
 
-void	fill_lis_stack(t_stack *s, int data[], int lis[], size_t size)
+void	lis_to_stack(t_lis *lis, t_stack *s)
 {
-	size_t	pos;
-	size_t	i;
-	size_t	j;
+	int	pos;
+	int	i;
+	int	j;
+	int	*count;
 
+	count = lis->seq_count;
+	pos = lis->max_pos;
 	i = 0;
-	pos = 0;
-	lis_max(lis, size, &pos);
-	while (i < s->len)
+	while (i < lis->max)
 	{
-		s->data[i] = data[pos];
+		s->data[i] = lis->seq[pos];
 		j = pos + 1;
-		while (j < size)
+		while (j < lis->seq_size)
 		{
-			if (lis[j] == lis[pos] - 1 && data[j] > data[pos])
+			if (count[j] == count[pos] - 1 && lis->seq[j] > lis->seq[pos])
 			{
 				pos = j;
 				break ;
@@ -86,21 +85,24 @@ void	fill_lis_stack(t_stack *s, int data[], int lis[], size_t size)
 	}
 }
 
-t_stack	*lis_length(int data[], size_t size)
+t_stack	*create_lis_stack(t_stack *src)
 {
 	t_stack	*s;
-	int		*lis;
-	size_t	pos;
+	t_lis	*lis;
 
-	lis = lis_gen(data, size);
+	lis = malloc(sizeof(t_lis));
 	if (lis == NULL)
 		return (NULL);
-	pos = 0;
-	s = stack_init(lis_max(lis, size, &pos));
+	lis->seq = src->data;
+	lis->seq_size = src->len;
+	lis->seq_count = save_seqs(src->data, src->len);
+	lis_cal_max(lis);
+	s = stack_init(lis->max);
 	if (s == NULL)
-		return (free(lis), NULL);
+		return (free(lis->seq_count), free(lis), NULL);
 	s->len = s->cap;
-	fill_lis_stack(s, data, lis, size);
+	lis_to_stack(lis, s);
+	free(lis->seq_count);
 	free(lis);
 	return (s);
 }

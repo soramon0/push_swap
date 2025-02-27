@@ -37,6 +37,7 @@ t_swapable	*swapable_init(size_t cap)
 	area->b = stack_init(cap);
 	if (area->b == NULL)
 		return (swapable_free(area), NULL);
+	area->ops_done = 0;
 	return (area);
 }
 

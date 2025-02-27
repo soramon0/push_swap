@@ -41,6 +41,7 @@ typedef struct s_swapable
 {
 	t_stack				*a;
 	t_stack				*b;
+	size_t				ops_done;
 }						t_swapable;
 
 typedef enum e_stack_op
@@ -65,6 +66,15 @@ typedef struct s_op_table
 	char				*name;
 	t_op_func			*method;
 }						t_op_table;
+
+typedef struct s_lis
+{
+	int					max;
+	int					max_pos;
+	int					*seq_count;
+	int					*seq;
+	int					seq_size;
+}						t_lis;
 
 # ifndef LOG_DEBUG
 #  define LOG_DEBUG 0
@@ -96,5 +106,5 @@ size_t					ft_hash_table_hash(t_hash_table *ht, int key);
 t_ht_node				*ft_ht_newkey(int value);
 void					ft_hash_table_free(t_hash_table *ht);
 ssize_t					ft_hash_table_exists(t_hash_table *ht, int key);
-t_stack					*lis_length(int data[], size_t size);
+t_stack					*create_lis_stack(t_stack *src);
 #endif
