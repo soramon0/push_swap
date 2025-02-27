@@ -96,5 +96,6 @@ size_t					ft_hash_table_hash(t_hash_table *ht, int key);
 t_ht_node				*ft_ht_newkey(int value);
 void					ft_hash_table_free(t_hash_table *ht);
 ssize_t					ft_hash_table_exists(t_hash_table *ht, int key);
+ssize_t					lis_length(int data[], size_t size);
 
 #endif
