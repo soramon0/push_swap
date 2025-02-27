@@ -52,7 +52,7 @@ ssize_t	sort(t_swapable *area)
 {
 	stack_print(area->a);
 	stack_print(area->b);
-	ft_printf("LIS = %d\n", lis_length(area->a->data, area->a->len));
+	lis_length(area->a->data, area->a->len);
 	if (area->a->len <= 1 || is_sorted(area->a) == 0)
 		return (0);
 	bubble_sort(area);

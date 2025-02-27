@@ -12,14 +12,14 @@
 
 #include "push_swap.h"
 
-int	max(int num1, int num2)
+static int	max(int num1, int num2)
 {
 	if (num1 > num2)
 		return (num1);
 	return (num2);
 }
 
-int	*init_lis(size_t size)
+static int	*init_lis(size_t size)
 {
 	int		*lis;
 	size_t	i;
@@ -35,7 +35,7 @@ int	*init_lis(size_t size)
 	return (lis);
 }
 
-ssize_t	lis_max(int lis[], size_t size)
+static ssize_t	lis_max(int lis[], size_t size)
 {
 	size_t	i;
 	size_t	len;
@@ -51,26 +51,27 @@ ssize_t	lis_length(int data[], size_t size)
 {
 	int		*lis;
 	ssize_t	len;
-	size_t	i;
-	size_t	j;
+	ssize_t	i;
+	ssize_t	j;
 
 	lis = init_lis(size);
 	if (lis == NULL)
 		return (-1);
 	len = 1;
-	i = 0;
-	while (i < size)
+	i = size - 1;
+	while (i >= 0)
 	{
-		j = 0;
-		while (j < i)
+		j = size - 1;
+		while (j > i)
 		{
-			if (data[i] > data[j])
+			if (data[i] < data[j])
 				lis[i] = max(lis[i], lis[j] + 1);
-			j++;
+			j--;
 		}
-		i++;
+		i--;
 	}
 	len = lis_max(lis, size);
+	debug_msg("Stack LIS = %d\n", len);
 	free(lis);
 	return (len);
 }

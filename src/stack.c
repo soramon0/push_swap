@@ -91,11 +91,9 @@ void	stack_print(t_stack *s)
 
 	i = (ssize_t)s->len - 1;
 	debug_msg("stack(%x) = %d/%d\n", s, s->len, s->cap);
-	debug_msg("[ ");
 	while (i >= 0)
 	{
-		debug_msg("%d ", s->data[i]);
+		debug_msg("| %d\t|\n", s->data[i]);
 		i--;
 	}
-	debug_msg("]\n");
 }
