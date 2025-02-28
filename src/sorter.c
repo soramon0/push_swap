@@ -67,13 +67,15 @@ int	find_lis(t_stack *s, int num)
 	return (found);
 }
 
-void move_unsorted(t_swapable *area)
+ssize_t	move_unsorted(t_swapable *area)
 {
 	t_stack	*lis;
 	size_t	diff;
 
 	lis = create_lis_stack(area->a);
 	stack_print(lis, "LIS");
+	if (lis == NULL)
+		return (-1);
 	diff = area->a->len - lis->len;
 	while (diff > 0)
 	{
@@ -85,7 +87,7 @@ void move_unsorted(t_swapable *area)
 		else
 			stack_do_op(area, OP_RA);
 	}
-	stack_free(lis);
+	return (stack_free(lis), 0);
 }
 
 ssize_t	sort(t_swapable *area)
@@ -94,7 +96,8 @@ ssize_t	sort(t_swapable *area)
 	stack_print(area->b, "B");
 	if (area->a->len <= 1 || is_sorted(area->a) == 0)
 		return (0);
-	move_unsorted(area);
+	if (move_unsorted(area) != 0)
+		return (-1);
 	stack_print(area->a, "A");
 	stack_print(area->b, "B");
 	debug_msg("Ops done = %d\n", area->ops_done);
