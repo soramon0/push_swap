@@ -12,7 +12,7 @@
 
 #include "push_swap.h"
 
-int	*save_seqs(int data[], size_t size)
+static int	*count_seq(int data[], size_t size)
 {
 	int		*lis;
 	ssize_t	i;
@@ -95,7 +95,7 @@ t_stack	*create_lis_stack(t_stack *src)
 		return (NULL);
 	lis->seq = src->data;
 	lis->seq_size = src->len;
-	lis->seq_count = save_seqs(src->data, src->len);
+	lis->seq_count = count_seq(src->data, src->len);
 	lis_cal_max(lis);
 	s = stack_init(lis->max);
 	if (s == NULL)

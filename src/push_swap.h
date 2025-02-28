@@ -81,7 +81,7 @@ typedef struct s_lis
 # endif
 
 t_stack					*stack_init(size_t cap);
-void					stack_print(t_stack *s);
+void	stack_print(t_stack *s, char *prefix);
 ssize_t					stack_push(t_stack *s, int num);
 ssize_t					stack_resize(t_stack *s, size_t cap);
 void					stack_free(t_stack *s);

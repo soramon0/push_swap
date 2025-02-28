@@ -85,7 +85,7 @@ ssize_t	stack_push(t_stack *s, int num)
 	return (0);
 }
 
-void	stack_print(t_stack *s)
+void	stack_print(t_stack *s, char *prefix)
 {
 	ssize_t	i;
 
@@ -93,6 +93,11 @@ void	stack_print(t_stack *s)
 	{
 		debug_msg("stack = NULL\n");
 		return ;
+	}
+	if (prefix != NULL)
+	{
+		debug_msg(prefix);
+		debug_msg(": ");
 	}
 	debug_msg("stack(%x) = %d/%d\n", s, s->len, s->cap);
 	if (s->len == 0)
