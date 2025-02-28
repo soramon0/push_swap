@@ -5,7 +5,7 @@ NAME = push_swap
 SRC = main.c $(shell find ./src -depth -maxdepth 1 -type f -name "*.c")
 OBJ = $(SRC:.c=.o)
 LIBFT_NAME = src/libft/libft.a
-PROGRAM_ARG=$(shell seq -500 500 | shuf -n 1000)
+PROGRAM_ARG=$(shell seq -251 250 | shuf -n 501)
 
 all: $(NAME)
 
