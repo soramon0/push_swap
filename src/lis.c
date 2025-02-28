@@ -41,7 +41,7 @@ static int	*count_seq(int data[], size_t size)
 	return (lis);
 }
 
-static void	lis_cal_max(t_lis *lis)
+static void	save_lis_length(t_lis *lis)
 {
 	ssize_t	i;
 
@@ -58,7 +58,7 @@ static void	lis_cal_max(t_lis *lis)
 	}
 }
 
-void	lis_to_stack(t_lis *lis, t_stack *s)
+void	move_lis(t_lis *lis, t_stack *s)
 {
 	int	pos;
 	int	i;
@@ -70,7 +70,7 @@ void	lis_to_stack(t_lis *lis, t_stack *s)
 	i = 0;
 	while (i < lis->max)
 	{
-		s->data[i] = lis->seq[pos];
+		s->data[s->len++] = lis->seq[pos];
 		j = pos + 1;
 		while (j < lis->seq_size)
 		{
@@ -96,13 +96,12 @@ t_stack	*create_lis_stack(t_stack *src)
 	lis->seq = src->data;
 	lis->seq_size = src->len;
 	lis->seq_count = count_seq(src->data, src->len);
-	lis_cal_max(lis);
+	if (lis->seq_count == NULL)
+		return (free(lis), NULL);
+	save_lis_length(lis);
 	s = stack_init(lis->max);
 	if (s == NULL)
 		return (free(lis->seq_count), free(lis), NULL);
-	s->len = s->cap;
-	lis_to_stack(lis, s);
-	free(lis->seq_count);
-	free(lis);
-	return (s);
+	move_lis(lis, s);
+	return (free(lis->seq_count), free(lis), s);
 }
