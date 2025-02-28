@@ -59,9 +59,9 @@ t_op_table	*stack_op_table_init(void)
 	table[OP_RA] = (t_op_table){"rotate_op", &stack_rotate_op};
 	table[OP_RB] = (t_op_table){"rotate_op", &stack_rotate_op};
 	table[OP_RR] = (t_op_table){"rotate_op", &stack_rotate_op};
-	table[OP_RRA] = (t_op_table){"rotate_op", &stack_rotate_op};
-	table[OP_RRB] = (t_op_table){"rotate_op", &stack_rotate_op};
-	table[OP_RRR] = (t_op_table){"rotate_op", &stack_rotate_op};
+	table[OP_RRA] = (t_op_table){"rrotate_op", &stack_rrotate_op};
+	table[OP_RRB] = (t_op_table){"rrotate_op", &stack_rrotate_op};
+	table[OP_RRR] = (t_op_table){"rrotate_op", &stack_rrotate_op};
 	return (table);
 }
 

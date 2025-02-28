@@ -69,31 +69,58 @@ ssize_t	stack_push_op(t_stack *a, t_stack *b, t_stack_op op)
 
 ssize_t	stack_rotate_op(t_stack *a, t_stack *b, t_stack_op op)
 {
-	int		direction;
 	t_stack	*src;
 	ssize_t	ops;
 
 	src = NULL;
-	direction = 1;
 	ops = 0;
-	if ((op == OP_RA || op == OP_RRA) && a->len >= 2)
+	if (op == OP_RA && a->len >= 2)
 		src = a;
-	if ((op == OP_RB || op == OP_RRB) && b->len >= 2)
+	if (op == OP_RB && b->len >= 2)
 		src = b;
-	if (op == OP_RRA || op == OP_RRB || op == OP_RRR)
-		direction = 0;
-	if (src != NULL && ++ops)
+	if (src != NULL)
 	{
+		ops++;
 		ft_printf("%s\n", op_str(op));
-		shift_ints(src, direction);
+		shift_ints(src, 1);
 	}
-	if ((op == OP_RR || op == OP_RRR) && (a->len >= 2 || b->len >= 2) && ++ops)
+	if (op == OP_RR && (a->len >= 2 || b->len >= 2))
 	{
+		ops++;
 		ft_printf("%s\n", op_str(op));
 		if (a->len >= 2)
-			shift_ints(a, direction);
+			shift_ints(a, 1);
 		if (b->len >= 2)
-			shift_ints(b, direction);
+			shift_ints(b, 1);
+	}
+	return (ops);
+}
+
+ssize_t	stack_rrotate_op(t_stack *a, t_stack *b, t_stack_op op)
+{
+	t_stack	*src;
+	ssize_t	ops;
+
+	src = NULL;
+	ops = 0;
+	if (op == OP_RRA && a->len >= 2)
+		src = a;
+	if (op == OP_RRB && b->len >= 2)
+		src = b;
+	if (src != NULL)
+	{
+		ops++;
+		ft_printf("%s\n", op_str(op));
+		shift_ints(src, 0);
+	}
+	if (op == OP_RRR && (a->len >= 2 || b->len >= 2))
+	{
+		ops++;
+		ft_printf("%s\n", op_str(op));
+		if (a->len >= 2)
+			shift_ints(a, 0);
+		if (b->len >= 2)
+			shift_ints(b, 0);
 	}
 	return (ops);
 }
