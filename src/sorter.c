@@ -48,25 +48,6 @@ void	bubble_sort(t_swapable *area)
 	}
 }
 
-int	find_lis(t_stack *s, int num)
-{
-	size_t	i;
-	int		found;
-
-	i = 0;
-	found = 0;
-	while (i < s->len)
-	{
-		if (s->data[i] == num)
-		{
-			found = 1;
-			break ;
-		}
-		i++;
-	}
-	return (found);
-}
-
 ssize_t	move_unsorted(t_swapable *area)
 {
 	t_stack	*lis;
@@ -79,7 +60,7 @@ ssize_t	move_unsorted(t_swapable *area)
 	diff = area->a->len - lis->len;
 	while (diff > 0)
 	{
-		if (!find_lis(lis, area->a->data[area->a->len - 1]))
+		if (lis_has(lis, area->a->data[area->a->len - 1]) == -1)
 		{
 			stack_do_op(area, OP_PB);
 			diff--;

@@ -58,7 +58,7 @@ static void	save_lis_length(t_lis *lis)
 	}
 }
 
-void	move_lis(t_lis *lis, t_stack *s)
+static void	move_lis(t_lis *lis, t_stack *s)
 {
 	int	pos;
 	int	i;
@@ -104,4 +104,23 @@ t_stack	*create_lis_stack(t_stack *src)
 		return (free(lis->seq_count), free(lis), NULL);
 	move_lis(lis, s);
 	return (free(lis->seq_count), free(lis), s);
+}
+
+ssize_t	lis_has(t_stack *s, int num)
+{
+	size_t	i;
+	ssize_t	index;
+
+	i = 0;
+	index = -1;
+	while (i < s->len)
+	{
+		if (s->data[i] == num)
+		{
+			index = i;
+			break ;
+		}
+		i++;
+	}
+	return (index);
 }
