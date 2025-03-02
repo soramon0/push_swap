@@ -67,10 +67,10 @@ ssize_t	find_insert_order(t_stack *pivot, t_stack *haystack, int needle)
 		return (-1);
 	bubble_sort(pivot);
 	index = stack_find_index(pivot, needle);
-	if (index == pivot->len - 1)
-		index = 0;
+	if (index == 0)
+		index = pivot->len - 1;
 	else
-		index++;
+		index--;
 	target = pivot->data[index];
 	i = haystack->len - 1;
 	while (i >= 0)
@@ -89,14 +89,15 @@ ssize_t	push_sorted(t_swapable *area)
 {
 	ssize_t	ops;
 	t_stack	*pivot;
+	int		needle;
 
 	pivot = stack_copy(area->a);
 	if (pivot == NULL)
 		return (-1);
 	while (area->b->len > 0)
 	{
-		ops = find_insert_order(pivot, area->a, area->b->data[area->b->len
-				- 1]);
+		needle = area->b->data[area->b->len - 1];
+		ops = find_insert_order(pivot, area->a, needle);
 		if (ops == -1)
 			return (stack_free(pivot), -1);
 		while (ops > 0)
@@ -105,8 +106,8 @@ ssize_t	push_sorted(t_swapable *area)
 			ops--;
 		}
 		stack_do_op(area, OP_PA);
-		stack_print(area->a, "A");
-		stack_print(area->b, "B");
+		// stack_print(area->a, "A");
+		// stack_print(area->b, "B");
 	}
 	return (stack_free(pivot), 0);
 }

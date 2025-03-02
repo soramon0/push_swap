@@ -14,19 +14,19 @@
 
 ssize_t	stack_find_index(t_stack *s, int num)
 {
-	size_t	i;
+	ssize_t	i;
 	ssize_t	index;
 
-	i = 0;
+	i = s->len - 1;
 	index = -1;
-	while (i < s->len)
+	while (i >= 0)
 	{
 		if (s->data[i] == num)
 		{
 			index = i;
 			break ;
 		}
-		i++;
+		i--;
 	}
 	return (index);
 }
