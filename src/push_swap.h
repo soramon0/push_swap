@@ -84,6 +84,9 @@ t_stack					*stack_init(size_t cap);
 void					stack_print(t_stack *s, char *prefix);
 ssize_t					stack_push(t_stack *s, int num);
 ssize_t					stack_resize(t_stack *s, size_t cap);
+ssize_t					stack_find_index(t_stack *s, int num);
+ssize_t					stack_is_sorted(t_stack *s);
+t_stack					*stack_copy(t_stack *s);
 void					stack_free(t_stack *s);
 t_op_table				*stack_op_table_init(void);
 ssize_t					stack_do_op(t_swapable *area, t_stack_op op);
@@ -108,5 +111,4 @@ t_ht_node				*ft_ht_newkey(int value);
 void					ft_hash_table_free(t_hash_table *ht);
 ssize_t					ft_hash_table_exists(t_hash_table *ht, int key);
 t_stack					*create_lis_stack(t_stack *src);
-ssize_t					lis_has(t_stack *s, int num);
 #endif

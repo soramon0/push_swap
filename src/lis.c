@@ -12,11 +12,18 @@
 
 #include "push_swap.h"
 
+int max(int num1, int num2)
+{
+	if (num1 > num2)
+		return (num1);
+	return (num2);
+}
+
 static int	*count_seq(int data[], size_t size)
 {
 	int		*lis;
-	ssize_t	i;
-	ssize_t	j;
+	size_t	i;
+	size_t	j;
 
 	if (size == 0)
 		return (NULL);
@@ -24,37 +31,44 @@ static int	*count_seq(int data[], size_t size)
 	if (lis == NULL)
 		return (NULL);
 	i = 0;
-	while (i < (ssize_t)size)
+	while (i < size)
 		lis[i++] = 1;
-	i = size - 1;
-	while (i >= 0)
-	{
-		j = size - 1;
-		while (j > i)
-		{
-			if (data[i] < data[j] && lis[i] < lis[j] + 1)
-				lis[i] = lis[j] + 1;
-			j--;
+	// i = 0;
+
+	for (i = 0; i < size; i++) {
+		for (j = 0; j < i; j++) {
+			if (data[j] < data[i])
+				lis[i] = max(lis[i], lis[j] + 1);
 		}
-		i--;
 	}
+	// while (i < size)
+	// {
+	// 	j = 0;
+	// 	while (j < i)
+	// 	{
+	// 		if (data[j] < data[i] && lis[j] + 1 > lis[i])
+	// 			lis[i] = lis[j] + 1;
+	// 		j++;
+	// 	}
+	// 	i++;
+	// }
 	return (lis);
 }
 
 static void	save_lis_length(t_lis *lis)
 {
-	ssize_t	i;
+	int	i;
 
-	i = lis->seq_size - 1;
+	i = 0;
 	lis->max = 0;
-	while (i >= 0)
+	while (i < lis->seq_size)
 	{
 		if (lis->seq_count[i] > lis->max)
 		{
 			lis->max = lis->seq_count[i];
 			lis->max_pos = i;
 		}
-		i--;
+		i++;
 	}
 }
 
@@ -104,23 +118,4 @@ t_stack	*create_lis_stack(t_stack *src)
 		return (free(lis->seq_count), free(lis), NULL);
 	move_lis(lis, s);
 	return (free(lis->seq_count), free(lis), s);
-}
-
-ssize_t	lis_has(t_stack *s, int num)
-{
-	size_t	i;
-	ssize_t	index;
-
-	i = 0;
-	index = -1;
-	while (i < s->len)
-	{
-		if (s->data[i] == num)
-		{
-			index = i;
-			break ;
-		}
-		i++;
-	}
-	return (index);
 }
