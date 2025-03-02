@@ -15,8 +15,8 @@
 static int	*count_seq(int data[], size_t size)
 {
 	int		*lis;
-	ssize_t	i;
-	ssize_t	j;
+	size_t	i;
+	size_t	j;
 
 	if (size == 0)
 		return (NULL);
@@ -24,19 +24,19 @@ static int	*count_seq(int data[], size_t size)
 	if (lis == NULL)
 		return (NULL);
 	i = 0;
-	while (i < (ssize_t)size)
+	while (i < size)
 		lis[i++] = 1;
-	i = size - 1;
-	while (i >= 0)
+	i = 0;
+	while (i < size)
 	{
-		j = size - 1;
-		while (j > i)
+		j = 0;
+		while (j < i)
 		{
-			if (data[i] < data[j] && lis[i] < lis[j] + 1)
+			if (data[j] > data[i] && lis[i] < lis[j] + 1)
 				lis[i] = lis[j] + 1;
-			j--;
+			j++;
 		}
-		i--;
+		i++;
 	}
 	return (lis);
 }
@@ -73,15 +73,15 @@ static void	move_lis(t_lis *lis, t_stack *s)
 	while (i < lis->max)
 	{
 		s->data[stack_pos--] = lis->seq[pos];
-		j = pos + 1;
-		while (j < lis->seq_size)
+		j = pos - 1;
+		while (j >= 0)
 		{
 			if (count[j] == count[pos] - 1 && lis->seq[j] > lis->seq[pos])
 			{
 				pos = j;
 				break ;
 			}
-			j++;
+			j--;
 		}
 		i++;
 	}

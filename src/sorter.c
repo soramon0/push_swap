@@ -52,7 +52,7 @@ ssize_t	push_unsorted(t_swapable *area)
 			diff--;
 		}
 		else
-			stack_do_op(area, OP_RRA);
+			stack_do_op(area, OP_RA);
 	}
 	return (stack_free(lis), 0);
 }
