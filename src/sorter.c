@@ -52,7 +52,7 @@ ssize_t	push_unsorted(t_swapable *area)
 			diff--;
 		}
 		else
-			stack_do_op(area, OP_RA);
+			stack_do_op(area, OP_RRA);
 	}
 	return (stack_free(lis), 0);
 }
@@ -60,7 +60,7 @@ ssize_t	push_unsorted(t_swapable *area)
 ssize_t	find_insert_order(t_stack *pivot, t_stack *haystack, int needle)
 {
 	ssize_t	i;
-	size_t index;
+	size_t	index;
 	int		target;
 
 	if (stack_push(pivot, needle) != 0)
@@ -82,21 +82,6 @@ ssize_t	find_insert_order(t_stack *pivot, t_stack *haystack, int needle)
 		}
 		i--;
 	}
-
-	// i = haystack->len - 2;
-	// index = haystack->len - 1;
-	// target = haystack->data[index];
-	// // allocate an array because life is a bitch
-	// while (i >= 0)
-	// {
-	// 	if (haystack->data[i] < needle && haystack->data[i + 1] > needle)
-	// 	{
-	// 		index = i;
-	// 		target = haystack->data[index];
-	// 		(void)target;
-	// 	}
-	// 	i--;
-	// }
 	return (haystack->len - 1 - index);
 }
 
@@ -126,33 +111,6 @@ ssize_t	push_sorted(t_swapable *area)
 	return (stack_free(pivot), 0);
 }
 
-void sort_a(t_swapable *area)
-{
-	ssize_t	i;
-	int	bg;
-	ssize_t	index;
-	size_t	diff;
-
-	i = area->a->len - 1;
-	bg = area->a->data[i];
-	while (i >= 0)
-	{
-		if (area->a->data[i] > bg)
-		{
-			bg = area->a->data[i];
-			index = i;
-		}
-		i--;
-	}
-	diff = area->a->len - index;
-	if (index > (ssize_t)area->a->len / 2)
-		while (diff > 0 && diff--)
-			stack_do_op(area, OP_RRA);
-	else
-		while (diff > 0 && diff--)
-			stack_do_op(area, OP_RA);
-}
-
 ssize_t	sort(t_swapable *area)
 {
 	stack_print(area->a, "A");
@@ -167,8 +125,6 @@ ssize_t	sort(t_swapable *area)
 		return (-1);
 	stack_print(area->a, "A");
 	stack_print(area->b, "B");
-	sort_a(area);
-	stack_print(area->a, "A");
 	debug_msg("Sorted in %d ops\n", area->ops_done);
 	return (0);
 }
