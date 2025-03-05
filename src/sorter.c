@@ -59,29 +59,24 @@ ssize_t	push_unsorted(t_swapable *area)
 
 ssize_t	find_insert_order(t_stack *pivot, t_stack *haystack, int needle)
 {
-	ssize_t	i;
-	size_t	index;
+	ssize_t	index;
+	ssize_t	needle_index;
 	int		target;
 
 	if (stack_push(pivot, needle) != 0)
 		return (-1);
 	bubble_sort(pivot);
 	index = stack_find_index(pivot, needle);
+	needle_index = index;
 	if (index == 0)
 		index = pivot->len - 1;
 	else
 		index--;
 	target = pivot->data[index];
-	i = haystack->len - 1;
-	while (i >= 0)
-	{
-		if (haystack->data[i] == target)
-		{
-			index = i;
-			break ;
-		}
-		i--;
-	}
+	index = stack_find_index(haystack, target);
+	if (index == -1)
+		return (-1);
+	pivot->data[needle_index] = pivot->data[--pivot->len];
 	return (haystack->len - 1 - index);
 }
 
@@ -127,9 +122,10 @@ ssize_t	find_best_move(t_stack *pivot, t_swapable *area)
 	ssize_t	ops;
 	t_stack	*moves;
 	size_t	moves_count;
-	int needle;
+	int		needle;
 
-	ops = find_insert_order(pivot, area->a, area->b->data[area->b->len - 1]);
+	needle = area->b->data[area->b->len - 1];
+	ops = find_insert_order(pivot, area->a, needle);
 	moves_count = min(area->b->len, ops);
 	if (moves_count <= 1)
 		return (ops);
@@ -138,7 +134,7 @@ ssize_t	find_best_move(t_stack *pivot, t_swapable *area)
 		return (-1);
 	if (stack_push(moves, ops) != 0)
 		return (stack_free(moves), -1);
-	while (moves->len < moves_count - moves->len)
+	while (moves->len < moves_count - (moves->len - 1))
 	{
 		needle = area->b->data[area->b->len - 1 - moves->len];
 		ops = find_insert_order(pivot, area->a, needle);
@@ -155,11 +151,11 @@ ssize_t	push_sorted(t_swapable *area)
 	ssize_t	ops;
 	t_stack	*pivot;
 
-	pivot = stack_copy(area->a);
-	if (pivot == NULL)
-		return (-1);
 	while (area->b->len > 0)
 	{
+		pivot = stack_copy(area->a);
+		if (pivot == NULL)
+			return (-1);
 		ops = find_best_move(pivot, area);
 		if (ops == -1)
 			return (stack_free(pivot), -1);
@@ -171,8 +167,9 @@ ssize_t	push_sorted(t_swapable *area)
 		stack_do_op(area, OP_PA);
 		stack_print(area->a, "A");
 		stack_print(area->b, "B");
+		stack_free(pivot);
 	}
-	return (stack_free(pivot), 0);
+	return (0);
 }
 
 ssize_t	sort(t_swapable *area)
