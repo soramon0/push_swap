@@ -76,6 +76,19 @@ typedef struct s_lis
 	int					seq_size;
 }						t_lis;
 
+typedef struct s_move
+{
+	t_stack_op			op;
+	size_t				count;
+	struct s_move		*next;
+}						t_move;
+
+typedef struct s_move_collection
+{
+	t_move				**moves;
+	size_t				count;
+}						t_move_collection;
+
 # ifndef LOG_DEBUG
 #  define LOG_DEBUG 0
 # endif
@@ -111,4 +124,19 @@ t_ht_node				*ft_ht_newkey(int value);
 void					ft_hash_table_free(t_hash_table *ht);
 ssize_t					ft_hash_table_exists(t_hash_table *ht, int key);
 t_stack					*create_lis_stack(t_stack *src);
+void					bubble_sort(t_stack *s);
+int						ft_min(int num1, int num2);
+t_move_collection		*create_move_coll(size_t moves_count);
+void					move_coll_free(t_move_collection *coll,
+							t_move **move_skip);
+ssize_t					add_move(t_move_collection *coll, t_move **move);
+t_move					*create_move(t_stack_op op, size_t count);
+void					move_free(t_move *move);
+size_t					move_total(t_move *move);
+t_move					*get_best_move(t_move_collection *coll);
+void					move_apply(t_swapable *area, t_move *move);
+t_move					*create_rapa_move(size_t ra_count);
+t_move					*create_rbpa_move(size_t rb_count);
+t_move					*create_rr_move(size_t rb_count, size_t ra_count);
+ssize_t	find_insert_pos(t_stack *pivot, t_stack *haystack, int needle);
 #endif
