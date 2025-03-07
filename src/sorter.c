@@ -57,7 +57,7 @@ ssize_t	push_unsorted(t_swapable *area)
 	return (stack_free(lis), 0);
 }
 
-ssize_t	find_insert_order(t_stack *pivot, t_stack *haystack, int needle)
+ssize_t	find_insert_pos(t_stack *pivot, t_stack *haystack, int needle)
 {
 	ssize_t	index;
 	ssize_t	needle_index;
@@ -100,12 +100,6 @@ typedef struct s_move_collection
 	size_t			count;
 }					t_move_collection;
 
-// coll = new s_move_collection()
-// coll[0].op = OP_SB
-// coll[0].count = 2
-// coll[1].op = OP_PA
-// coll[1].count = 1
-
 t_move	*create_move(t_stack_op op, size_t count)
 {
 	t_move	*move;
@@ -134,9 +128,6 @@ ssize_t	add_move(t_move_collection *coll, t_move **move)
 	}
 	else
 	{
-		moves = malloc(sizeof(t_move *) * coll->count + 1);
-		if (moves == NULL)
-			return (-1);
 		i = 0;
 		while (i < coll->count)
 		{
@@ -144,6 +135,7 @@ ssize_t	add_move(t_move_collection *coll, t_move **move)
 			i++;
 		}
 		moves[i] = *move;
+		free(coll->moves);
 		coll->moves = moves;
 	}
 	coll->count++;
@@ -161,6 +153,41 @@ size_t	move_total(t_move *move)
 		move = move->next;
 	}
 	return (total);
+}
+
+void	move_free(t_move *move)
+{
+	t_move	*tmp;
+
+	while (move != NULL)
+	{
+		tmp = move;
+		move = move->next;
+		free(tmp);
+	}
+}
+
+void	move_coll_free(t_move_collection *coll, t_move **move_skip)
+{
+	size_t	i;
+
+	if (coll == NULL)
+		return ;
+	i = 0;
+	while (i < coll->count)
+	{
+		if (move_skip != NULL && *move_skip != NULL)
+		{
+			if (*move_skip == coll->moves[i])
+			{
+				i++;
+				continue ;
+			}
+		}
+		move_free(coll->moves[i++]);
+	}
+	free(coll->moves);
+	free(coll);
 }
 
 t_move	*cal_best_move(t_move_collection *coll)
@@ -186,6 +213,7 @@ t_move	*cal_best_move(t_move_collection *coll)
 		}
 		i++;
 	}
+	move_coll_free(coll, &best);
 	return (best);
 }
 
@@ -241,8 +269,20 @@ t_move	*create_rr_move(size_t rb_count, size_t ra_count)
 	else
 		move->next = create_move(OP_PA, 1);
 	if (move->next == NULL)
-		return (free(move), NULL);
+		return (move_free(move), NULL);
 	return (move);
+}
+
+t_move_collection	*create_move_coll(size_t moves_count)
+{
+	t_move_collection	*coll;
+
+	coll = malloc(sizeof(t_move_collection) * moves_count);
+	if (coll == NULL)
+		return (NULL);
+	coll->moves = NULL;
+	coll->count = 0;
+	return (coll);
 }
 
 t_move	*find_best_move(t_stack *pivot, t_swapable *area)
@@ -253,33 +293,41 @@ t_move	*find_best_move(t_stack *pivot, t_swapable *area)
 	t_move				*coll_move;
 	t_move_collection	*coll;
 
-	needle = area->b->data[area->b->len - 1];
-	ops = find_insert_order(pivot, area->a, needle);
+	ops = find_insert_pos(pivot, area->a, area->b->data[area->b->len - 1]);
 	moves_count = min(area->b->len, ops);
-	coll = malloc(sizeof(t_move_collection) * moves_count);
-	if (coll == NULL)
-		return (NULL);
-	coll->moves = NULL;
-	coll->count = 0;
 	coll_move = create_rapa_move(ops);
 	if (coll_move == NULL)
-		return (free(coll_move), NULL);
-	add_move(coll, &coll_move);
+		return (NULL);
 	if (moves_count <= 1)
-		return (free(coll), coll_move);
+		return (coll_move);
+	coll = create_move_coll(moves_count);
+	if (coll == NULL)
+		return (move_free(coll_move), NULL);
+	if (add_move(coll, &coll_move) != 0)
+		return (move_coll_free(coll, NULL), (move_free(coll_move)), NULL);
 	while (coll->count < moves_count - (coll->count - 1))
 	{
 		needle = area->b->data[area->b->len - 1 - coll->count];
-		ops = find_insert_order(pivot, area->a, needle);
+		ops = find_insert_pos(pivot, area->a, needle);
 		if (ops == -1)
-			return (free(coll), NULL); // walk linked list array and free
+			return (move_coll_free(coll, NULL), NULL);
 		coll_move = create_rr_move(coll->count, ops);
 		if (coll_move == NULL)
-			return (free(coll), NULL); // walk linked list array and free
+			return (move_coll_free(coll, NULL), NULL);
 		if (add_move(coll, &coll_move) != 0)
-			return (free(coll), NULL);
+			return (move_coll_free(coll, NULL), (move_free(coll_move)), NULL);
 	}
 	return (cal_best_move(coll));
+}
+
+void	move_apply(t_swapable *area, t_move *move)
+{
+	while (move != NULL)
+	{
+		while (move->count--)
+			stack_do_op(area, move->op);
+		move = move->next;
+	}
 }
 
 ssize_t	push_sorted(t_swapable *area)
@@ -295,15 +343,10 @@ ssize_t	push_sorted(t_swapable *area)
 		move = find_best_move(pivot, area);
 		if (move == NULL)
 			return (stack_free(pivot), -1);
-		while (move != NULL)
-		{
-			while (move->count--)
-				stack_do_op(area, move->op);
-			move = move->next;
-		}
-		// stack_do_op(area, OP_PA);
+		move_apply(area, move);
 		stack_print(area->a, "A");
 		stack_print(area->b, "B");
+		move_free(move);
 		stack_free(pivot);
 	}
 	return (0);
