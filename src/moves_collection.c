@@ -19,8 +19,11 @@ t_move_collection	*create_move_coll(size_t moves_count)
 	coll = malloc(sizeof(t_move_collection) * moves_count);
 	if (coll == NULL)
 		return (NULL);
-	coll->moves = NULL;
 	coll->count = 0;
+	coll->cap = 10;
+	coll->moves = malloc(sizeof(t_move *) * coll->cap);
+	if (coll->moves == NULL)
+		return (NULL);
 	return (coll);
 }
 
@@ -29,16 +32,14 @@ ssize_t	add_move(t_move_collection *coll, t_move **move)
 	t_move	**moves;
 	size_t	i;
 
-	moves = malloc(sizeof(t_move *) * coll->count + 1);
-	if (moves == NULL)
-		return (-1);
-	if (coll->moves == NULL)
-	{
-		moves[0] = *move;
-		coll->moves = moves;
-	}
+	if (coll->count < coll->cap)
+		coll->moves[coll->count] = *move;
 	else
 	{
+		coll->cap += 10;
+		moves = malloc(sizeof(t_move *) * coll->cap);
+		if (moves == NULL)
+			return (-1);
 		i = 0;
 		while (i < coll->count)
 		{

@@ -87,6 +87,7 @@ typedef struct s_move_collection
 {
 	t_move				**moves;
 	size_t				count;
+	size_t				cap;
 }						t_move_collection;
 
 # ifndef LOG_DEBUG
@@ -138,5 +139,6 @@ void					move_apply(t_swapable *area, t_move *move);
 t_move					*create_rapa_move(size_t ra_count);
 t_move					*create_rbpa_move(size_t rb_count);
 t_move					*create_rr_move(size_t rb_count, size_t ra_count);
-ssize_t	find_insert_pos(t_stack *pivot, t_stack *haystack, int needle);
+ssize_t					find_insert_pos(t_stack *pivot, t_stack *haystack,
+							int needle);
 #endif
