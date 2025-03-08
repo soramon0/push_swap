@@ -53,19 +53,13 @@ t_move	*find_best_move(t_stack *pivot, t_swapable *area)
 	coll = create_move_coll(moves_count);
 	if (coll == NULL)
 		return (move_free(coll_move), NULL);
-	if (add_move(coll, &coll_move) != 0)
+	if (coll_add_move(coll, &coll_move) != 0)
 		return (move_coll_free(coll, NULL), (move_free(coll_move)), NULL);
 	while (coll->count < moves_count - (coll->count - 1))
 	{
 		needle = area->b->data[area->b->len - 1 - coll->count];
-		ops = find_insert_pos(pivot, area->a, needle);
-		if (ops == -1)
+		if (save_rr_move(coll, pivot, area->a, needle) != 0)
 			return (move_coll_free(coll, NULL), NULL);
-		coll_move = create_rr_move(coll->count, ops);
-		if (coll_move == NULL)
-			return (move_coll_free(coll, NULL), NULL);
-		if (add_move(coll, &coll_move) != 0)
-			return (move_coll_free(coll, NULL), (move_free(coll_move)), NULL);
 	}
 	return (get_best_move(coll));
 }

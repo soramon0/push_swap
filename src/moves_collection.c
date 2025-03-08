@@ -27,7 +27,7 @@ t_move_collection	*create_move_coll(size_t moves_count)
 	return (coll);
 }
 
-ssize_t	add_move(t_move_collection *coll, t_move **move)
+ssize_t	coll_add_move(t_move_collection *coll, t_move **move)
 {
 	t_move	**moves;
 	size_t	i;
@@ -51,6 +51,23 @@ ssize_t	add_move(t_move_collection *coll, t_move **move)
 		coll->moves = moves;
 	}
 	coll->count++;
+	return (0);
+}
+
+ssize_t	save_rr_move(t_move_collection *coll, t_stack *pivot, t_stack *haystack,
+		int needle)
+{
+	int		ops;
+	t_move	*coll_move;
+
+	ops = find_insert_pos(pivot, haystack, needle);
+	if (ops == -1)
+		return (-1);
+	coll_move = create_rr_move(coll->count, ops);
+	if (coll_move == NULL)
+		return (-1);
+	if (coll_add_move(coll, &coll_move) != 0)
+		return ((move_free(coll_move)), -1);
 	return (0);
 }
 

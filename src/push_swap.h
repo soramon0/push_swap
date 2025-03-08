@@ -130,8 +130,10 @@ int						ft_min(int num1, int num2);
 t_move_collection		*create_move_coll(size_t moves_count);
 void					move_coll_free(t_move_collection *coll,
 							t_move **move_skip);
-ssize_t					add_move(t_move_collection *coll, t_move **move);
+ssize_t					coll_add_move(t_move_collection *coll, t_move **move);
 t_move					*create_move(t_stack_op op, size_t count);
+ssize_t					save_rr_move(t_move_collection *coll, t_stack *pivot,
+							t_stack *haystack, int needle);
 void					move_free(t_move *move);
 size_t					move_total(t_move *move);
 t_move					*get_best_move(t_move_collection *coll);
