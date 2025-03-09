@@ -29,6 +29,12 @@ ssize_t	push_unsorted(t_swapable *area)
 			stack_do_op(area, OP_PB, 1);
 			diff--;
 		}
+		else if (stack_find_index(lis, area->a->data[0]) == -1)
+		{
+			stack_do_op(area, OP_RRA, 1);
+			stack_do_op(area, OP_PB, 1);
+			diff--;
+		}
 		else
 			stack_do_op(area, OP_RA, 1);
 	}
