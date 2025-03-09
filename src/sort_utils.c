@@ -34,6 +34,22 @@ void	bubble_sort(t_stack *s)
 	}
 }
 
+int	stack_find_sm(t_stack *s)
+{
+	size_t	i;
+	int		sm;
+
+	i = 0;
+	sm = s->data[i++];
+	while (i < s->len)
+	{
+		if (s->data[i] < sm)
+			sm = s->data[i];
+		i++;
+	}
+	return (sm);
+}
+
 ssize_t	find_insert_pos(t_stack *pivot, t_stack *haystack, int needle)
 {
 	ssize_t	index;

@@ -125,6 +125,7 @@ t_ht_node				*ft_ht_newkey(int value);
 void					ft_hash_table_free(t_hash_table *ht);
 ssize_t					ft_hash_table_exists(t_hash_table *ht, int key);
 t_stack					*create_lis_stack(t_stack *src);
+int						stack_find_sm(t_stack *s);
 void					bubble_sort(t_stack *s);
 int						ft_min(int num1, int num2);
 t_move_collection		*coll_init(size_t moves_count);

@@ -80,6 +80,33 @@ ssize_t	push_sorted(t_swapable *area)
 	return (0);
 }
 
+ssize_t	push_top(t_swapable *area)
+{
+	int			sm;
+	size_t		index;
+	t_stack_op	op;
+
+	sm = stack_find_sm(area->a);
+	index = stack_find_index(area->a, sm);
+	if (index > (area->a->len) / 2)
+	{
+		index = area->a->len - 1 - index;
+		op = OP_RA;
+	}
+	else
+	{
+		++index;
+		op = OP_RRA;
+	}
+	while (index > 0)
+	{
+		if (stack_do_op(area, op) != 0)
+			return (0);
+		index--;
+	}
+	return (0);
+}
+
 ssize_t	sort(t_swapable *area)
 {
 	stack_print(area->a, "A");
@@ -92,6 +119,9 @@ ssize_t	sort(t_swapable *area)
 	stack_print(area->b, "B");
 	if (push_sorted(area) != 0)
 		return (-1);
+	if (push_top(area) != 0)
+		return (0);
+	stack_print(area->a, "A");
 	debug_msg("Sorted in %d ops\n", area->ops_done);
 	return (0);
 }
