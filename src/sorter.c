@@ -113,6 +113,10 @@ ssize_t	sort(t_swapable *area)
 	stack_print(area->b, "B");
 	if (area->a->len <= 1 || stack_is_sorted(area->a) == 0)
 		return (0);
+	area->c = stack_copy(area->a);
+	if (area->c == NULL)
+		return (-1);
+	bubble_sort(area->c);
 	if (push_unsorted(area) != 0)
 		return (-1);
 	stack_print(area->a, "A");
@@ -123,5 +127,6 @@ ssize_t	sort(t_swapable *area)
 		return (0);
 	stack_print(area->a, "A");
 	debug_msg("Sorted in %d ops\n", area->ops_done);
+	debug_msg("Stack is sorted = %d\n", stack_equal(area->a, area->c));
 	return (0);
 }

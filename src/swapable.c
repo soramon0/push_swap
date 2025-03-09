@@ -18,8 +18,10 @@ void	swapable_free(t_swapable *area)
 	{
 		stack_free(area->a);
 		stack_free(area->b);
+		stack_free(area->c);
 		area->a = NULL;
 		area->b = NULL;
+		area->c = NULL;
 		free(area);
 	}
 }
@@ -37,6 +39,7 @@ t_swapable	*swapable_init(size_t cap)
 	area->b = stack_init(cap);
 	if (area->b == NULL)
 		return (swapable_free(area), NULL);
+	area->c = NULL;
 	area->ops_done = 0;
 	return (area);
 }

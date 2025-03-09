@@ -34,6 +34,22 @@ void	bubble_sort(t_stack *s)
 	}
 }
 
+ssize_t	stack_equal(t_stack *a, t_stack *b)
+{
+	size_t	i;
+
+	if (a->len != b->len)
+		return (-1);
+	i = 0;
+	while (i < a->len)
+	{
+		if (a->data[i] != b->data[i])
+			return (-1);
+		i++;
+	}
+	return (0);
+}
+
 int	stack_find_sm(t_stack *s)
 {
 	size_t	i;
