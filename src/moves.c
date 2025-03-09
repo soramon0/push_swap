@@ -73,7 +73,7 @@ t_move	*get_best_move(t_move_collection *coll)
 		}
 		i++;
 	}
-	move_coll_free(coll, &best);
+	coll_free(coll, &best);
 	return (best);
 }
 

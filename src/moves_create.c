@@ -12,11 +12,11 @@
 
 #include "push_swap.h"
 
-t_move	*create_rapa_move(size_t ra_count)
+t_move	*create_rapa_move(size_t a_moves)
 {
 	t_move	*move;
 
-	move = create_move(OP_RA, ra_count);
+	move = create_move(OP_RA, a_moves);
 	if (move == NULL)
 		return (NULL);
 	move->next = create_move(OP_PA, 1);
@@ -25,11 +25,11 @@ t_move	*create_rapa_move(size_t ra_count)
 	return (move);
 }
 
-t_move	*create_rbpa_move(size_t rb_count)
+t_move	*create_rbpa_move(size_t b_moves)
 {
 	t_move	*move;
 
-	move = create_move(OP_RB, rb_count);
+	move = create_move(OP_RB, b_moves);
 	if (move == NULL)
 		return (NULL);
 	move->next = create_move(OP_PA, 1);
@@ -38,25 +38,38 @@ t_move	*create_rbpa_move(size_t rb_count)
 	return (move);
 }
 
-t_move	*create_rr_move(size_t rb_count, size_t ra_count)
+t_move	*create_rr_move(size_t b_moves, size_t a_moves)
 {
 	t_move	*move;
 
-	if (rb_count > ra_count)
-		move = create_move(OP_RR, ra_count);
-	else if (rb_count < ra_count)
-		move = create_move(OP_RR, rb_count);
+	if (b_moves > a_moves)
+		move = create_move(OP_RR, a_moves);
+	else if (b_moves < a_moves)
+		move = create_move(OP_RR, b_moves);
 	else
-		move = create_move(OP_RR, ra_count);
+		move = create_move(OP_RR, a_moves);
 	if (move == NULL)
 		return (NULL);
-	if (rb_count > ra_count)
-		move->next = create_rbpa_move(rb_count - ra_count);
-	else if (rb_count < ra_count)
-		move->next = create_rapa_move(ra_count - rb_count);
+	if (b_moves > a_moves)
+		move->next = create_rbpa_move(b_moves - a_moves);
+	else if (b_moves < a_moves)
+		move->next = create_rapa_move(a_moves - b_moves);
 	else
 		move->next = create_move(OP_PA, 1);
 	if (move->next == NULL)
 		return (move_free(move), NULL);
+	return (move);
+}
+
+t_move	*create_rrarbpa_move(size_t b_moves, size_t a_moves)
+{
+	t_move	*move;
+
+	move = create_move(OP_RRA, a_moves);
+	if (move == NULL)
+		return (NULL);
+	move->next = create_rbpa_move(b_moves);
+	if (move->next == NULL)
+		return (free(move), NULL);
 	return (move);
 }

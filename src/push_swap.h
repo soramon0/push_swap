@@ -127,12 +127,10 @@ ssize_t					ft_hash_table_exists(t_hash_table *ht, int key);
 t_stack					*create_lis_stack(t_stack *src);
 void					bubble_sort(t_stack *s);
 int						ft_min(int num1, int num2);
-t_move_collection		*create_move_coll(size_t moves_count);
-void					move_coll_free(t_move_collection *coll,
-							t_move **move_skip);
-ssize_t					coll_add_move(t_move_collection *coll, t_move **move);
+t_move_collection		*coll_init(size_t moves_count);
+void					coll_free(t_move_collection *coll, t_move **move_skip);
 t_move					*create_move(t_stack_op op, size_t count);
-ssize_t					save_rr_move(t_move_collection *coll, t_stack *pivot,
+ssize_t					coll_save(t_move_collection *coll, t_stack *pivot,
 							t_stack *haystack, int needle);
 void					move_free(t_move *move);
 size_t					move_total(t_move *move);
@@ -140,6 +138,7 @@ t_move					*get_best_move(t_move_collection *coll);
 void					move_apply(t_swapable *area, t_move *move);
 t_move					*create_rapa_move(size_t ra_count);
 t_move					*create_rbpa_move(size_t rb_count);
+t_move					*create_rrarbpa_move(size_t b_moves, size_t a_moves);
 t_move					*create_rr_move(size_t rb_count, size_t ra_count);
 ssize_t					find_insert_pos(t_stack *pivot, t_stack *haystack,
 							int needle);

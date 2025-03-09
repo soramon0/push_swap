@@ -40,26 +40,20 @@ t_move	*find_best_move(t_stack *pivot, t_swapable *area)
 	ssize_t				ops;
 	size_t				moves_count;
 	int					needle;
-	t_move				*coll_move;
 	t_move_collection	*coll;
 
 	ops = find_insert_pos(pivot, area->a, area->b->data[area->b->len - 1]);
 	moves_count = ft_min(area->b->len, ops);
-	coll_move = create_rapa_move(ops);
-	if (coll_move == NULL)
-		return (NULL);
-	if (moves_count <= 1)
-		return (coll_move);
-	coll = create_move_coll(moves_count);
+	if (moves_count == 0)
+		return (create_move(OP_PA, 1));
+	coll = coll_init(moves_count);
 	if (coll == NULL)
-		return (move_free(coll_move), NULL);
-	if (coll_add_move(coll, &coll_move) != 0)
-		return (move_coll_free(coll, NULL), (move_free(coll_move)), NULL);
-	while (coll->count < moves_count - (coll->count - 1))
+		return (NULL);
+	while (coll->count < moves_count - coll->count)
 	{
 		needle = area->b->data[area->b->len - 1 - coll->count];
-		if (save_rr_move(coll, pivot, area->a, needle) != 0)
-			return (move_coll_free(coll, NULL), NULL);
+		if (coll_save(coll, pivot, area->a, needle) != 0)
+			return (coll_free(coll, NULL), NULL);
 	}
 	return (get_best_move(coll));
 }
@@ -98,8 +92,6 @@ ssize_t	sort(t_swapable *area)
 	stack_print(area->b, "B");
 	if (push_sorted(area) != 0)
 		return (-1);
-	stack_print(area->a, "A");
-	stack_print(area->b, "B");
 	debug_msg("Sorted in %d ops\n", area->ops_done);
 	return (0);
 }

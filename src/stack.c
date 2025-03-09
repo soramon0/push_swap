@@ -108,7 +108,7 @@ void	stack_print(t_stack *s, char *prefix)
 	i = (ssize_t)s->len - 1;
 	while (i >= 0)
 	{
-		debug_msg("| %d\t|\n", s->data[i]);
+		debug_msg("%d\n", s->data[i]);
 		i--;
 	}
 }

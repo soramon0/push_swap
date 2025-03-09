@@ -12,7 +12,7 @@
 
 #include "push_swap.h"
 
-t_move_collection	*create_move_coll(size_t moves_count)
+t_move_collection	*coll_init(size_t moves_count)
 {
 	t_move_collection	*coll;
 
@@ -27,7 +27,7 @@ t_move_collection	*create_move_coll(size_t moves_count)
 	return (coll);
 }
 
-ssize_t	coll_add_move(t_move_collection *coll, t_move **move)
+ssize_t	coll_add(t_move_collection *coll, t_move **move)
 {
 	t_move	**moves;
 	size_t	i;
@@ -54,7 +54,7 @@ ssize_t	coll_add_move(t_move_collection *coll, t_move **move)
 	return (0);
 }
 
-ssize_t	save_rr_move(t_move_collection *coll, t_stack *pivot, t_stack *haystack,
+ssize_t	coll_save(t_move_collection *coll, t_stack *pivot, t_stack *haystack,
 		int needle)
 {
 	int		ops;
@@ -63,15 +63,18 @@ ssize_t	save_rr_move(t_move_collection *coll, t_stack *pivot, t_stack *haystack,
 	ops = find_insert_pos(pivot, haystack, needle);
 	if (ops == -1)
 		return (-1);
-	coll_move = create_rr_move(coll->count, ops);
+	if ((size_t)ops < haystack->len / 2)
+		coll_move = create_rr_move(coll->count, ops);
+	else
+		coll_move = create_rrarbpa_move(coll->count, haystack->len - ops);
 	if (coll_move == NULL)
 		return (-1);
-	if (coll_add_move(coll, &coll_move) != 0)
+	if (coll_add(coll, &coll_move) != 0)
 		return ((move_free(coll_move)), -1);
 	return (0);
 }
 
-void	move_coll_free(t_move_collection *coll, t_move **move_skip)
+void	coll_free(t_move_collection *coll, t_move **move_skip)
 {
 	size_t	i;
 
