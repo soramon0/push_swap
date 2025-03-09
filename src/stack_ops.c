@@ -12,24 +12,24 @@
 
 #include "push_swap.h"
 
-ssize_t	stack_swap_op(t_stack *a, t_stack *b, t_stack_op op)
+ssize_t	stack_swap_op(t_stack *a, t_stack *b, t_stack_op op, int print)
 {
 	ssize_t	ops;
 
 	ops = 0;
 	if (op == OP_SA && a->len >= 2 && ++ops)
 	{
-		ft_printf("%s\n", op_str(op));
+		print_op(print, "%s\n", op_str(op));
 		swap_ints(a->data + a->len - 1, a->data + a->len - 2);
 	}
 	if (op == OP_SB && b->len >= 2 && ++ops)
 	{
-		ft_printf("%s\n", op_str(op));
+		print_op(print, "%s\n", op_str(op));
 		swap_ints(b->data + b->len - 1, b->data + b->len - 2);
 	}
 	if (op == OP_SS && (a->len >= 2 || b->len >= 2) && ++op)
 	{
-		ft_printf("%s\n", op_str(op));
+		print_op(print, "%s\n", op_str(op));
 		if (a->len >= 2)
 			swap_ints(a->data + a->len - 1, a->data + a->len - 2);
 		if (b->len >= 2)
@@ -38,7 +38,7 @@ ssize_t	stack_swap_op(t_stack *a, t_stack *b, t_stack_op op)
 	return (ops);
 }
 
-ssize_t	stack_push_op(t_stack *a, t_stack *b, t_stack_op op)
+ssize_t	stack_push_op(t_stack *a, t_stack *b, t_stack_op op, int print)
 {
 	t_stack	*src;
 	t_stack	*dst;
@@ -61,13 +61,13 @@ ssize_t	stack_push_op(t_stack *a, t_stack *b, t_stack_op op)
 	{
 		if (stack_push(dst, src->data[src->len - 1]) != 0)
 			return (-1);
-		ft_printf("%s\n", op_str(op));
+		print_op(print, "%s\n", op_str(op));
 		src->len--;
 	}
 	return (ops);
 }
 
-ssize_t	stack_rotate_op(t_stack *a, t_stack *b, t_stack_op op)
+ssize_t	stack_rotate_op(t_stack *a, t_stack *b, t_stack_op op, int print)
 {
 	t_stack	*src;
 	ssize_t	ops;
@@ -81,13 +81,13 @@ ssize_t	stack_rotate_op(t_stack *a, t_stack *b, t_stack_op op)
 	if (src != NULL)
 	{
 		ops++;
-		ft_printf("%s\n", op_str(op));
+		print_op(print, "%s\n", op_str(op));
 		shift_ints(src, 1);
 	}
 	if (op == OP_RR && (a->len >= 2 || b->len >= 2))
 	{
 		ops++;
-		ft_printf("%s\n", op_str(op));
+		print_op(print, "%s\n", op_str(op));
 		if (a->len >= 2)
 			shift_ints(a, 1);
 		if (b->len >= 2)
@@ -96,7 +96,7 @@ ssize_t	stack_rotate_op(t_stack *a, t_stack *b, t_stack_op op)
 	return (ops);
 }
 
-ssize_t	stack_rrotate_op(t_stack *a, t_stack *b, t_stack_op op)
+ssize_t	stack_rrotate_op(t_stack *a, t_stack *b, t_stack_op op, int print)
 {
 	t_stack	*src;
 	ssize_t	ops;
@@ -110,13 +110,13 @@ ssize_t	stack_rrotate_op(t_stack *a, t_stack *b, t_stack_op op)
 	if (src != NULL)
 	{
 		ops++;
-		ft_printf("%s\n", op_str(op));
+		print_op(print, "%s\n", op_str(op));
 		shift_ints(src, 0);
 	}
 	if (op == OP_RRR && (a->len >= 2 || b->len >= 2))
 	{
 		ops++;
-		ft_printf("%s\n", op_str(op));
+		print_op(print, "%s\n", op_str(op));
 		if (a->len >= 2)
 			shift_ints(a, 0);
 		if (b->len >= 2)

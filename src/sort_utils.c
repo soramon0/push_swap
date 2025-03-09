@@ -50,7 +50,25 @@ ssize_t	stack_equal(t_stack *a, t_stack *b)
 	return (0);
 }
 
-int	stack_find_sm(t_stack *s)
+int	stack_min_max(t_stack *s, int direction)
+{
+	size_t	i;
+	int		val;
+
+	i = 0;
+	val = s->data[i++];
+	while (i < s->len)
+	{
+		if (direction == 0 && s->data[i] < val)
+			val = s->data[i];
+		if (direction == 1 && s->data[i] > val)
+			val = s->data[i];
+		i++;
+	}
+	return (val);
+}
+
+int	stack_find_bg(t_stack *s)
 {
 	size_t	i;
 	int		sm;

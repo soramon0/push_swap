@@ -26,11 +26,11 @@ ssize_t	push_unsorted(t_swapable *area)
 	{
 		if (stack_find_index(lis, area->a->data[area->a->len - 1]) == -1)
 		{
-			stack_do_op(area, OP_PB);
+			stack_do_op(area, OP_PB, 1);
 			diff--;
 		}
 		else
-			stack_do_op(area, OP_RA);
+			stack_do_op(area, OP_RA, 1);
 	}
 	return (stack_free(lis), 0);
 }
@@ -71,7 +71,7 @@ ssize_t	push_sorted(t_swapable *area)
 		move = find_best_move(pivot, area);
 		if (move == NULL)
 			return (stack_free(pivot), -1);
-		move_apply(area, move);
+		move_apply(area, move, 1);
 		stack_print(area->a, "A");
 		stack_print(area->b, "B");
 		move_free(move);
@@ -86,7 +86,7 @@ ssize_t	push_top(t_swapable *area)
 	size_t		index;
 	t_stack_op	op;
 
-	sm = stack_find_sm(area->a);
+	sm = stack_min_max(area->a, 0);
 	index = stack_find_index(area->a, sm);
 	if (index > (area->a->len) / 2)
 	{
@@ -100,7 +100,7 @@ ssize_t	push_top(t_swapable *area)
 	}
 	while (index > 0)
 	{
-		if (stack_do_op(area, op) != 0)
+		if (stack_do_op(area, op, 1) != 0)
 			return (0);
 		index--;
 	}

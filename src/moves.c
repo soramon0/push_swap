@@ -77,12 +77,12 @@ t_move	*get_best_move(t_move_collection *coll)
 	return (best);
 }
 
-void	move_apply(t_swapable *area, t_move *move)
+void	move_apply(t_swapable *area, t_move *move, int print)
 {
 	while (move != NULL)
 	{
 		while (move->count--)
-			stack_do_op(area, move->op);
+			stack_do_op(area, move->op, print);
 		move = move->next;
 	}
 }

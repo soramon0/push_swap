@@ -60,7 +60,8 @@ typedef enum e_stack_op
 	OP_RRR,
 }						t_stack_op;
 
-typedef ssize_t			t_op_func(t_stack *a, t_stack *b, t_stack_op op);
+typedef ssize_t			t_op_func(t_stack *a, t_stack *b, t_stack_op op,
+							int print);
 
 typedef struct s_op_table
 {
@@ -105,11 +106,16 @@ ssize_t					stack_equal(t_stack *a, t_stack *b);
 t_stack					*stack_copy(t_stack *s);
 void					stack_free(t_stack *s);
 t_op_table				*stack_op_table_init(void);
-ssize_t					stack_do_op(t_swapable *area, t_stack_op op);
-ssize_t					stack_push_op(t_stack *a, t_stack *b, t_stack_op op);
-ssize_t					stack_swap_op(t_stack *a, t_stack *b, t_stack_op op);
-ssize_t					stack_rotate_op(t_stack *a, t_stack *b, t_stack_op op);
-ssize_t					stack_rrotate_op(t_stack *a, t_stack *b, t_stack_op op);
+void					print_op(int print, char *fmt, ...);
+ssize_t					stack_do_op(t_swapable *area, t_stack_op op, int print);
+ssize_t					stack_push_op(t_stack *a, t_stack *b, t_stack_op op,
+							int print);
+ssize_t					stack_swap_op(t_stack *a, t_stack *b, t_stack_op op,
+							int print);
+ssize_t					stack_rotate_op(t_stack *a, t_stack *b, t_stack_op op,
+							int print);
+ssize_t					stack_rrotate_op(t_stack *a, t_stack *b, t_stack_op op,
+							int print);
 ssize_t					sort(t_swapable *area);
 void					stack_reverse(t_stack *s);
 void					err_exit(char *fmt, ...);
@@ -127,7 +133,7 @@ t_ht_node				*ft_ht_newkey(int value);
 void					ft_hash_table_free(t_hash_table *ht);
 ssize_t					ft_hash_table_exists(t_hash_table *ht, int key);
 t_stack					*create_lis_stack(t_stack *src);
-int						stack_find_sm(t_stack *s);
+int						stack_min_max(t_stack *s, int direction);
 void					bubble_sort(t_stack *s);
 int						ft_min(int num1, int num2);
 t_move_collection		*coll_init(size_t moves_count);
@@ -138,7 +144,7 @@ ssize_t					coll_save(t_move_collection *coll, t_stack *pivot,
 void					move_free(t_move *move);
 size_t					move_total(t_move *move);
 t_move					*get_best_move(t_move_collection *coll);
-void					move_apply(t_swapable *area, t_move *move);
+void					move_apply(t_swapable *area, t_move *move, int print);
 t_move					*create_rapa_move(size_t ra_count);
 t_move					*create_rbpa_move(size_t rb_count);
 t_move					*create_rrarbpa_move(size_t b_moves, size_t a_moves);
