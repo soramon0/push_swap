@@ -94,7 +94,7 @@ ssize_t	push_top(t_swapable *area)
 
 	sm = stack_min_max(area->a, 0);
 	index = stack_find_index(area->a, sm);
-	if (index > (area->a->len) / 2)
+	if (index >= (area->a->len) / 2)
 	{
 		index = area->a->len - 1 - index;
 		op = OP_RA;
