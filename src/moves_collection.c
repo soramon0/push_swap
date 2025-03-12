@@ -21,6 +21,8 @@ t_move_collection	*coll_init(size_t moves_count)
 		return (NULL);
 	coll->count = 0;
 	coll->cap = 10;
+	coll->up_offset = 0;
+	coll->down_offset = 0;
 	coll->moves = malloc(sizeof(t_move *) * coll->cap);
 	if (coll->moves == NULL)
 		return (NULL);
@@ -54,7 +56,7 @@ ssize_t	coll_add(t_move_collection *coll, t_move **move)
 	return (0);
 }
 
-ssize_t	coll_save(t_move_collection *coll, t_stack *pivot, t_stack *haystack,
+ssize_t	coll_save_up(t_move_collection *coll, t_stack *pivot, t_stack *haystack,
 		int needle)
 {
 	int		ops;
@@ -63,14 +65,43 @@ ssize_t	coll_save(t_move_collection *coll, t_stack *pivot, t_stack *haystack,
 	ops = find_insert_pos(pivot, haystack, needle);
 	if (ops == -1)
 		return (-1);
-	if ((size_t)ops < haystack->len / 2)
-		coll_move = create_rr_move(coll->count, ops);
+	if ((size_t)ops <= haystack->len / 2)
+		coll_move = create_rr_move(coll->up_offset, ops);
 	else
-		coll_move = create_rrarbpa_move(coll->count, haystack->len - ops);
+		coll_move = create_rrarbpa_move(coll->up_offset, haystack->len - ops);
 	if (coll_move == NULL)
 		return (-1);
 	if (coll_add(coll, &coll_move) != 0)
 		return ((move_free(coll_move)), -1);
+	coll->up_offset++;
+	return (0);
+}
+
+ssize_t	coll_save_down(t_move_collection *coll, t_stack *pivot,
+		t_stack *haystack, int needle)
+{
+	int		ops;
+	t_move	*coll_move;
+
+	ops = find_insert_pos_rev(pivot, haystack, needle);
+	if (ops == -1)
+		return (-1);
+	if ((size_t)ops <= haystack->len / 2)
+		coll_move = create_rrarrbpa_move(ops, coll->down_offset + 1);
+	else
+	{
+		coll_move = create_move(OP_RA, haystack->len - ops);
+		if (coll_move == NULL)
+			return (-1);
+		coll_move->next = create_rrbpa_move(coll->down_offset + 1);
+		if (coll_move->next == NULL)
+			return (-1);
+	}
+	if (coll_move == NULL)
+		return (-1);
+	if (coll_add(coll, &coll_move) != 0)
+		return ((move_free(coll_move)), -1);
+	coll->down_offset++;
 	return (0);
 }
 

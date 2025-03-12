@@ -45,6 +45,7 @@ t_move	*find_best_move(t_stack *pivot, t_swapable *area)
 {
 	ssize_t				ops;
 	size_t				moves_count;
+	size_t				count;
 	int					needle;
 	t_move_collection	*coll;
 
@@ -55,11 +56,16 @@ t_move	*find_best_move(t_stack *pivot, t_swapable *area)
 	coll = coll_init(moves_count);
 	if (coll == NULL)
 		return (NULL);
-	while (coll->count < moves_count - coll->count)
+	count = 0;
+	while (count < moves_count - count)
 	{
-		needle = area->b->data[area->b->len - 1 - coll->count];
-		if (coll_save(coll, pivot, area->a, needle) != 0)
+		needle = area->b->data[area->b->len - 1 - count];
+		if (coll_save_up(coll, pivot, area->a, needle) != 0)
 			return (coll_free(coll, NULL), NULL);
+		needle = area->b->data[count];
+		if (coll_save_down(coll, pivot, area->a, needle) != 0)
+			return (coll_free(coll, NULL), NULL);
+		count++;
 	}
 	return (get_best_move(coll));
 }
@@ -69,20 +75,20 @@ ssize_t	push_sorted(t_swapable *area)
 	t_move	*move;
 	t_stack	*pivot;
 
+	pivot = stack_copy(area->a);
+	if (pivot == NULL)
+		return (-1);
 	while (area->b->len > 0)
 	{
-		pivot = stack_copy(area->a);
-		if (pivot == NULL)
-			return (-1);
 		move = find_best_move(pivot, area);
 		if (move == NULL)
 			return (stack_free(pivot), -1);
 		move_apply(area, move, 1);
-		stack_print(area->a, "A");
-		stack_print(area->b, "B");
 		move_free(move);
-		stack_free(pivot);
+		if (stack_push(pivot, area->a->data[area->a->len - 1]) != 0)
+			return (stack_free(pivot), -1);
 	}
+	stack_free(pivot);
 	return (0);
 }
 
@@ -115,23 +121,18 @@ ssize_t	push_top(t_swapable *area)
 
 ssize_t	sort(t_swapable *area)
 {
-	stack_print(area->a, "A");
-	stack_print(area->b, "B");
 	if (area->a->len <= 1 || stack_is_sorted(area->a) == 0)
+		return (0);
+	if (push_unsorted_chunks(area) != 0)
+		return (-1);
+	if (push_sorted(area) != 0)
+		return (-1);
+	if (push_top(area) != 0)
 		return (0);
 	area->c = stack_copy(area->a);
 	if (area->c == NULL)
 		return (-1);
 	bubble_sort(area->c);
-	if (push_unsorted(area) != 0)
-		return (-1);
-	stack_print(area->a, "A");
-	stack_print(area->b, "B");
-	if (push_sorted(area) != 0)
-		return (-1);
-	if (push_top(area) != 0)
-		return (0);
-	stack_print(area->a, "A");
 	debug_msg("Sorted in %d ops\n", area->ops_done);
 	debug_msg("Stack is sorted = %d\n", stack_equal(area->a, area->c));
 	return (0);

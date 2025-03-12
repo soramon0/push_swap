@@ -82,12 +82,15 @@ typedef struct s_move
 {
 	t_stack_op			op;
 	size_t				count;
+	int					target;
 	struct s_move		*next;
 }						t_move;
 
 typedef struct s_move_collection
 {
 	t_move				**moves;
+	size_t				up_offset;
+	size_t				down_offset;
 	size_t				count;
 	size_t				cap;
 }						t_move_collection;
@@ -135,11 +138,15 @@ ssize_t					ft_hash_table_exists(t_hash_table *ht, int key);
 t_stack					*create_lis_stack(t_stack *src);
 int						stack_min_max(t_stack *s, int direction);
 void					bubble_sort(t_stack *s);
+void					bubble_sort_rev(t_stack *s);
 int						ft_min(int num1, int num2);
+int						ft_max(int num1, int num2);
 t_move_collection		*coll_init(size_t moves_count);
 void					coll_free(t_move_collection *coll, t_move **move_skip);
 t_move					*create_move(t_stack_op op, size_t count);
-ssize_t					coll_save(t_move_collection *coll, t_stack *pivot,
+ssize_t					coll_save_up(t_move_collection *coll, t_stack *pivot,
+							t_stack *haystack, int needle);
+ssize_t					coll_save_down(t_move_collection *coll, t_stack *pivot,
 							t_stack *haystack, int needle);
 void					move_free(t_move *move);
 size_t					move_total(t_move *move);
@@ -147,8 +154,15 @@ t_move					*get_best_move(t_move_collection *coll);
 void					move_apply(t_swapable *area, t_move *move, int print);
 t_move					*create_rapa_move(size_t ra_count);
 t_move					*create_rbpa_move(size_t rb_count);
+t_move					*create_rrbpa_move(size_t b_moves);
+t_move					*create_rrapa_move(size_t b_moves);
+t_move					*create_rrarrbpa_move(size_t b_moves, size_t a_moves);
 t_move					*create_rrarbpa_move(size_t b_moves, size_t a_moves);
 t_move					*create_rr_move(size_t rb_count, size_t ra_count);
+t_move					*create_rrr_move(size_t rb_count, size_t ra_count);
+ssize_t					push_unsorted_chunks(t_swapable *area);
 ssize_t					find_insert_pos(t_stack *pivot, t_stack *haystack,
+							int needle);
+ssize_t					find_insert_pos_rev(t_stack *pivot, t_stack *haystack,
 							int needle);
 #endif

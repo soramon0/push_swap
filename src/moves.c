@@ -81,8 +81,11 @@ void	move_apply(t_swapable *area, t_move *move, int print)
 {
 	while (move != NULL)
 	{
-		while (move->count--)
+		while (move->count > 0)
+		{
 			stack_do_op(area, move->op, print);
+			move->count--;
+		}
 		move = move->next;
 	}
 }

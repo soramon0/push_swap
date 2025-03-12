@@ -111,4 +111,5 @@ void	stack_print(t_stack *s, char *prefix)
 		debug_msg("%d\n", s->data[i]);
 		i--;
 	}
+	debug_msg("-------------\n");
 }
