@@ -18,6 +18,8 @@ t_stack	*add_none_lis_sorted(t_stack *lis, t_stack *src)
 	size_t	i;
 	size_t	diff;
 
+	if (lis == NULL)
+		return (NULL);
 	diff = src->len - lis->len;
 	s = stack_init(diff);
 	if (s == NULL)
@@ -52,24 +54,37 @@ size_t	best_bound(size_t len)
 	return (bound);
 }
 
-ssize_t	push_unsorted_chunks(t_swapable *area)
+ssize_t	move_chunk(t_swapable *area, ssize_t end, int needle)
 {
-	t_stack	*lis;
-	size_t	diff;
-	ssize_t	end;
-	int		needle;
-	int		bound;
+	ssize_t	r;
 
-	lis = create_lis_stack(area->a);
-	stack_print(lis, "LIS");
-	if (lis == NULL)
-		return (-1);
-	area->c = add_none_lis_sorted(lis, area->a);
-	if (area->c == NULL)
-		return (stack_free(lis), -1);
-	bound = best_bound(area->c->len);
-	end = area->c->len - bound;
-	diff = area->a->len - lis->len;
+	if (needle <= area->c->data[end])
+	{
+		r = stack_do_op(area, OP_PB, 1);
+		if (r != 0)
+			return (-1);
+		return (1);
+	}
+	else if (needle >= area->c->data[best_bound(area->c->len)])
+	{
+		r = stack_do_op(area, OP_PB, 1);
+		if (r != 0)
+			return (-1);
+		r = stack_do_op(area, OP_RB, 1);
+		if (r != 0)
+			return (-1);
+		return (1);
+	}
+	else
+		r = stack_do_op(area, OP_RA, 1);
+	return (r);
+}
+
+size_t	move_chunks(t_swapable *area, size_t diff, ssize_t end, int bound)
+{
+	int		needle;
+	ssize_t	result;
+
 	while (diff > 0)
 	{
 		needle = area->a->data[area->a->len - 1];
@@ -78,24 +93,34 @@ ssize_t	push_unsorted_chunks(t_swapable *area)
 			stack_do_op(area, OP_RA, 1);
 			continue ;
 		}
-		if (needle <= area->c->data[end])
-		{
-			stack_do_op(area, OP_PB, 1);
+		result = move_chunk(area, end, needle);
+		if (result == -1)
+			return (-1);
+		if (result == 1)
 			diff--;
-		}
-		else if (needle >= area->c->data[best_bound(area->c->len)])
-		{
-			stack_do_op(area, OP_PB, 1);
-			stack_do_op(area, OP_RB, 1);
-			diff--;
-		}
-		else
-			stack_do_op(area, OP_RA, 1);
 		if (area->b->len >= (size_t)bound)
 		{
 			end = ft_max(0, end - best_bound(area->c->len));
 			bound = ft_min(area->c->len - 1, bound + best_bound(area->c->len));
 		}
 	}
+	return (0);
+}
+
+ssize_t	push_unsorted_chunks(t_swapable *area)
+{
+	t_stack	*lis;
+	size_t	diff;
+	ssize_t	end;
+	int		bound;
+
+	lis = create_lis_stack(area->a);
+	area->c = add_none_lis_sorted(lis, area->a);
+	if (area->c == NULL)
+		return (stack_free(lis), -1);
+	bound = best_bound(area->c->len);
+	end = area->c->len - bound;
+	diff = area->a->len - lis->len;
+	move_chunks(area, diff, end, bound);
 	return (stack_free(lis), stack_free(area->c), 0);
 }
