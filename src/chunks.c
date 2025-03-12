@@ -18,8 +18,6 @@ t_stack	*add_none_lis_sorted(t_stack *lis, t_stack *src)
 	size_t	i;
 	size_t	diff;
 
-	if (lis == NULL)
-		return (NULL);
 	diff = src->len - lis->len;
 	s = stack_init(diff);
 	if (s == NULL)
@@ -90,7 +88,8 @@ size_t	move_chunks(t_swapable *area, size_t diff, ssize_t end, int bound)
 		needle = area->a->data[area->a->len - 1];
 		if (stack_find_index(area->c, needle) == -1)
 		{
-			stack_do_op(area, OP_RA, 1);
+			if (stack_do_op(area, OP_RA, 1) != 0)
+				return (-1);
 			continue ;
 		}
 		result = move_chunk(area, end, needle);
@@ -115,6 +114,8 @@ ssize_t	push_unsorted_chunks(t_swapable *area)
 	int		bound;
 
 	lis = create_lis_stack(area->a);
+	if (lis == NULL)
+		return (-1);
 	area->c = add_none_lis_sorted(lis, area->a);
 	if (area->c == NULL)
 		return (stack_free(lis), -1);
