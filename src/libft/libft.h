@@ -26,6 +26,15 @@ typedef struct s_list
 
 }					t_list;
 
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 69
+# endif
+
+# if BUFFER_SIZE < 0
+#  undef BUFFER_SIZE
+#  define BUFFER_SIZE 0
+# endif
+
 int					ft_atoi(const char *nptr, int *valid);
 int					ft_isdigit(int c);
 size_t				ft_strlen(const char *s);
@@ -44,6 +53,7 @@ void				ft_lstadd_front(t_list **lst, t_list *item);
 void				ft_lstadd_sorted(t_list **head, void *content,
 						int (*f)(void *, void *));
 int					ft_lstsize(t_list *lst);
+char				*ft_strndup(const char *src, size_t n);
 t_list				*ft_lstlast(t_list *lst);
 void				ft_lstadd_back(t_list **lst, t_list *item);
 void				ft_lstdelone(t_list *lst, void (*del)(void *));
@@ -61,5 +71,8 @@ int					ft_putnbr(int n);
 int					ft_putunbr(unsigned int n);
 int					ft_putnbr_hex(unsigned long num, int uppercase);
 int					ft_putptr(void *num);
+
+ssize_t				get_next_line(int fd, char **receiver);
+ssize_t				ft_istrchr(const char *s, char c);
 
 #endif

@@ -1,9 +1,11 @@
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g -D LOG_DEBUG=1
-EXTRA_FLAGS = 
 NAME = push_swap
+NAME_BONUS = checker
 SRC = main.c $(shell find ./src -depth -maxdepth 1 -type f -name "*.c")
+SRC_BONUS = main_bonus.c $(shell find ./src -depth -maxdepth 1 -type f -name "*.c")
 OBJ = $(SRC:.c=.o)
+OBJ_BONUS = $(SRC_BONUS:.c=.o)
 LIBFT_NAME = src/libft/libft.a
 PROGRAM_ARG=$(shell seq -2500 5000 | shuf -n 500)
 
@@ -17,18 +19,23 @@ libft: $(LIBFT_NAME)
 $(NAME): $(LIBFT_NAME) $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) $(LIBFT_NAME) -o $(NAME)
 
+bonus: $(LIBFT_NAME) $(OBJ_BONUS)
+	$(CC) $(CFLAGS) $(OBJ_BONUS) $(LIBFT_NAME) -o $(NAME_BONUS)
+
 $(LIBFT_NAME):
 	$(MAKE) -C ./src/libft
 
 clean:
 	$(MAKE) -C src/libft clean
-	rm -f $(OBJ)
+	rm -f $(OBJ) $(OBJ_BONUS)
 
 fclean: clean
 	$(MAKE) -C src/libft fclean
-	rm -f $(NAME)
+	rm -f $(NAME) $(NAME_BONUS)
 
 re: fclean all
+
+re_bonus: fclean bonus
 
 run: debug
 	./push_swap "$(PROGRAM_ARG)"

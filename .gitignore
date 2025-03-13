@@ -2,6 +2,7 @@
 *.o
 # Binary
 push_swap
+checker
 # libft archive
 src/libft/libft.a
 # valgrind profiling annotation files
