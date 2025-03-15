@@ -44,11 +44,13 @@ size_t	best_bound(size_t len)
 	ssize_t	bound;
 
 	if (len <= 50)
-		bound = len;
+		bound = len / 2;
 	else if (len <= 100)
 		bound = len / 4;
 	else
 		bound = len / 8;
+	if (bound <= 1)
+		return (len);
 	return (bound);
 }
 

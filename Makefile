@@ -1,5 +1,6 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -D LOG_DEBUG=1
+CFLAGS = -Wall -Wextra -Werror -g -D LOG_DEBUG=0
+BONUS_CFLAGS = -Wall -Wextra -Werror -g -D LOG_DEBUG=1
 NAME = push_swap
 NAME_BONUS = checker
 SRC = main.c $(shell find ./src -depth -maxdepth 1 -type f -name "*.c")
@@ -11,6 +12,8 @@ PROGRAM_ARG=$(shell seq -2500 5000 | shuf -n 500)
 
 all: $(NAME)
 
+bonus: $(NAME_BONUS)
+
 libft: $(LIBFT_NAME)
 
 %.o: %.c
@@ -19,8 +22,8 @@ libft: $(LIBFT_NAME)
 $(NAME): $(LIBFT_NAME) $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) $(LIBFT_NAME) -o $(NAME)
 
-bonus: $(LIBFT_NAME) $(OBJ_BONUS)
-	$(CC) $(CFLAGS) $(OBJ_BONUS) $(LIBFT_NAME) -o $(NAME_BONUS)
+$(NAME_BONUS): $(LIBFT_NAME) $(OBJ_BONUS)
+	$(CC) $(BONUS_CFLAGS) $(OBJ_BONUS) $(LIBFT_NAME) -o $(NAME_BONUS)
 
 $(LIBFT_NAME):
 	$(MAKE) -C ./src/libft
@@ -62,4 +65,4 @@ profile_mem: profile_mem_gen
 run_checker:
 	./push_swap "$(PROGRAM_ARG)" | ./checker_linux "$(PROGRAM_ARG)"
 
-.PHONY: all clean fclean re run libft run_checker debug profile_cpu profile_mem profile_mem_gen profile_cpu_gen leaks
+.PHONY: all bonus clean fclean re run libft run_checker debug profile_cpu profile_mem profile_mem_gen profile_cpu_gen leaks

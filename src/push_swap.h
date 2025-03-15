@@ -58,6 +58,7 @@ typedef enum e_stack_op
 	OP_RRA,
 	OP_RRB,
 	OP_RRR,
+	OP_UNKNOWN,
 }						t_stack_op;
 
 typedef ssize_t			t_op_func(t_stack *a, t_stack *b, t_stack_op op,
@@ -82,7 +83,6 @@ typedef struct s_move
 {
 	t_stack_op			op;
 	size_t				count;
-	int					target;
 	struct s_move		*next;
 }						t_move;
 
@@ -123,6 +123,7 @@ ssize_t					sort(t_swapable *area);
 void					stack_reverse(t_stack *s);
 void					err_exit(char *fmt, ...);
 void					debug_msg(char *fmt, ...);
+t_stack_op				str_to_op(const char *str);
 void					swap_ints(int *a, int *b);
 void					shift_ints(t_stack *s, int dirction);
 char					*op_str(t_stack_op op);
@@ -144,6 +145,7 @@ int						ft_max(int num1, int num2);
 t_move_collection		*coll_init(size_t moves_count);
 void					coll_free(t_move_collection *coll, t_move **move_skip);
 t_move					*create_move(t_stack_op op, size_t count);
+ssize_t					coll_add(t_move_collection *coll, t_move **move);
 ssize_t					coll_save_up(t_move_collection *coll, t_stack *pivot,
 							t_stack *haystack, int needle);
 ssize_t					coll_save_down(t_move_collection *coll, t_stack *pivot,
