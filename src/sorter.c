@@ -10,37 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
 #include "push_swap.h"
-
-ssize_t	push_unsorted(t_swapable *area)
-{
-	t_stack	*lis;
-	size_t	diff;
-
-	lis = create_lis_stack(area->a);
-	stack_print(lis, "LIS");
-	if (lis == NULL)
-		return (-1);
-	diff = area->a->len - lis->len;
-	while (diff > 0)
-	{
-		if (stack_find_index(lis, area->a->data[area->a->len - 1]) == -1)
-		{
-			stack_do_op(area, OP_PB, 1);
-			diff--;
-		}
-		else if (stack_find_index(lis, area->a->data[0]) == -1)
-		{
-			stack_do_op(area, OP_RRA, 1);
-			stack_do_op(area, OP_PB, 1);
-			diff--;
-		}
-		else
-			stack_do_op(area, OP_RA, 1);
-	}
-	return (stack_free(lis), 0);
-}
 
 t_move	*find_best_move(t_stack *pivot, t_swapable *area)
 {
@@ -120,74 +90,6 @@ ssize_t	push_top(t_swapable *area)
 	return (0);
 }
 
-ssize_t	all_mutation(t_swapable *area)
-{
-	size_t	index;
-
-	index = stack_find_index(area->a, stack_min_max(area->a, 0));
-	if (index == 0 && area->a->data[2] > area->a->data[1])
-	{
-		if (stack_do_op(area, OP_SA, 1) != 0)
-			return (-1);
-		if (stack_do_op(area, OP_RRA, 1) != 0)
-			return (-1);
-		return (0);
-	}
-	if (index == 1 && area->a->data[0] > area->a->data[1]
-		&& area->a->data[1] < area->a->data[2])
-	{
-		if (stack_do_op(area, OP_RA, 1) != 0)
-			return (-1);
-		return (0);
-	}
-	else
-	{
-		if (stack_do_op(area, OP_SA, 1) != 0)
-			return (-1);
-		return (0);
-	}
-	if (index == 2 && area->a->data[1] > area->a->data[0])
-	{
-		if (stack_do_op(area, OP_RA, 1) != 0)
-			return (-1);
-		if (stack_do_op(area, OP_SA, 1) != 0)
-			return (-1);
-		if (stack_do_op(area, OP_RRA, 1) != 0)
-			return (-1);
-	}
-	return (0);
-}
-
-t_stack	*best_lis(t_swapable *area)
-{
-	t_stack	*lis;
-	size_t	best;
-	size_t	index;
-	ssize_t	rotation;
-
-	best = 0;
-	index = 0;
-	while (index < area->a->len)
-	{
-		lis = create_lis_stack(area->a);
-		if (lis == NULL)
-			return (NULL);
-		if (lis->len > best)
-		{
-			rotation = index;
-			best = lis->len;
-		}
-		stack_do_op(area, OP_RA, 0);
-		++index;
-		stack_free(lis);
-	}
-	while (index--)
-		stack_do_op(area, OP_RRA, 0);
-	while (rotation--)
-		stack_do_op(area, OP_RA, 1);
-	return (create_lis_stack(area->a));
-}
-
 ssize_t	push_small_list(t_swapable *area)
 {
 	t_stack	*lis;
@@ -197,7 +99,7 @@ ssize_t	push_small_list(t_swapable *area)
 		stack_do_op(area, OP_PB, 1);
 		stack_do_op(area, OP_PB, 1);
 	}
-	lis = best_lis(area);
+	lis = get_best_lis(area);
 	if (lis == NULL)
 		return (-1);
 	if (lis->len == 3 && area->b->len == 0)

@@ -106,6 +106,7 @@ ssize_t					stack_resize(t_stack *s, size_t cap);
 ssize_t					stack_find_index(t_stack *s, int num);
 ssize_t					stack_is_sorted(t_stack *s);
 ssize_t					stack_equal(t_stack *a, t_stack *b);
+t_stack					*get_best_lis(t_swapable *area);
 t_stack					*stack_copy(t_stack *s);
 void					stack_free(t_stack *s);
 t_op_table				*stack_op_table_init(void);

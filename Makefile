@@ -1,6 +1,6 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -D LOG_DEBUG=1
-BONUS_CFLAGS = -Wall -Wextra -Werror -g -D LOG_DEBUG=1
+CFLAGS = -Wall -Wextra -Werror -g -D LOG_DEBUG=0
+BONUS_CFLAGS = -Wall -Wextra -Werror -g -D LOG_DEBUG=0
 NAME = push_swap
 NAME_BONUS = checker
 SRC = main.c $(shell find ./src -depth -maxdepth 1 -type f -name "*.c")
@@ -8,7 +8,7 @@ SRC_BONUS = main_bonus.c $(shell find ./src -depth -maxdepth 1 -type f -name "*.
 OBJ = $(SRC:.c=.o)
 OBJ_BONUS = $(SRC_BONUS:.c=.o)
 LIBFT_NAME = src/libft/libft.a
-PROGRAM_ARG=$(shell seq -2500 5000 | shuf -n 3)
+PROGRAM_ARG=$(shell seq -2500 5000 | shuf -n 100)
 
 all: $(NAME)
 

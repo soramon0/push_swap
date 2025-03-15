@@ -57,3 +57,32 @@ ssize_t	find_insert_pos_rev(t_stack *pivot, t_stack *haystack, int needle)
 	pivot->data[needle_index] = pivot->data[--pivot->len];
 	return (index);
 }
+
+ssize_t	push_unsorted(t_swapable *area)
+{
+	t_stack	*lis;
+	size_t	diff;
+
+	lis = create_lis_stack(area->a);
+	stack_print(lis, "LIS");
+	if (lis == NULL)
+		return (-1);
+	diff = area->a->len - lis->len;
+	while (diff > 0)
+	{
+		if (stack_find_index(lis, area->a->data[area->a->len - 1]) == -1)
+		{
+			stack_do_op(area, OP_PB, 1);
+			diff--;
+		}
+		else if (stack_find_index(lis, area->a->data[0]) == -1)
+		{
+			stack_do_op(area, OP_RRA, 1);
+			stack_do_op(area, OP_PB, 1);
+			diff--;
+		}
+		else
+			stack_do_op(area, OP_RA, 1);
+	}
+	return (stack_free(lis), 0);
+}

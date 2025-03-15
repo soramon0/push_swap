@@ -110,3 +110,32 @@ t_stack	*create_lis_stack(t_stack *src)
 	move_lis(lis, s);
 	return (free(lis->seq_count), free(lis), s);
 }
+
+t_stack	*get_best_lis(t_swapable *area)
+{
+	t_stack	*lis;
+	size_t	best;
+	size_t	index;
+	ssize_t	rotation;
+
+	best = 0;
+	index = -1;
+	while (++index < area->a->len)
+	{
+		lis = create_lis_stack(area->a);
+		if (lis == NULL)
+			return (NULL);
+		if (lis->len > best)
+		{
+			rotation = index;
+			best = lis->len;
+		}
+		stack_do_op(area, OP_RA, 0);
+		stack_free(lis);
+	}
+	while (index--)
+		stack_do_op(area, OP_RRA, 0);
+	while (rotation--)
+		stack_do_op(area, OP_RA, 1);
+	return (create_lis_stack(area->a));
+}
