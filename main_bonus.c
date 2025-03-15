@@ -10,35 +10,43 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "src/libft/libft.h"
 #include "src/push_swap.h"
 
-ssize_t	process_move(t_swapable *area, char *data)
+t_move	*add_move(t_stack_op op, t_move *move, t_move **head_move)
 {
-	ssize_t		bytes;
+	if (move == NULL)
+	{
+		move = create_move(op, 1);
+		if (move == NULL)
+			return (NULL);
+		*head_move = move;
+	}
+	else
+	{
+		move->next = create_move(op, 1);
+		if (move->next == NULL)
+			return (move_free(*head_move), NULL);
+		move = move->next;
+	}
+	return (move);
+}
+
+ssize_t	process_move(t_swapable *area, char *data, ssize_t bytes)
+{
 	t_stack_op	op;
 	t_move		*move;
 	t_move		*head_move;
 
 	move = NULL;
+	head_move = NULL;
 	while (1)
 	{
 		op = str_to_op(data);
 		if (op == OP_UNKNOWN)
 			return (swapable_free(area), free(data), err_exit(NULL), -1);
+		move = add_move(op, move, &head_move);
 		if (move == NULL)
-		{
-			move = create_move(op, 1);
-			head_move = move;
-		}
-		else
-		{
-			move->next = create_move(op, 1);
-			move = move->next;
-		}
-		if (move == NULL)
-			return (swapable_free(area), free(data), move_free(head_move),
-				err_exit(NULL), -1);
+			return (swapable_free(area), free(data), err_exit(NULL), -1);
 		free(data);
 		bytes = get_next_line(0, &data);
 		if (bytes == -1)
@@ -67,13 +75,10 @@ ssize_t	process(t_swapable *area)
 			return (-1);
 		return (0);
 	}
-	if (process_move(area, data) != 0)
+	if (process_move(area, data, bytes) != 0)
 		return (-1);
 	if (stack_is_sorted(area->a) != 0)
-	{
-		ft_printf("GOT HERE\n");
 		return (-1);
-	}
 	if (area->b->len != 0)
 		return (-1);
 	return (0);
