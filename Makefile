@@ -1,6 +1,7 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -D LOG_DEBUG=0
-BONUS_CFLAGS = -Wall -Wextra -Werror -g -D LOG_DEBUG=0
+CFLAGS = -Wall -Wextra -Werror
+EXTRA_FLAGS= -g -D LOG_DEBUG=1
+BONUS_CFLAGS = -Wall -Wextra -Werror
 NAME = push_swap
 NAME_BONUS = checker
 SRC = main.c $(shell find ./src -depth -maxdepth 1 -type f -name "*.c")

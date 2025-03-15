@@ -1,5 +1,5 @@
 CC = cc
-FLAGS = -Wall -Wextra -Werror -g
+FLAGS = -Wall -Wextra -Werror
 NAME = libft.a
 SRCS = $(shell find . -type f -name "*.c")
 OBJS = $(SRCS:.c=.o)
