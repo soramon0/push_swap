@@ -92,6 +92,8 @@ t_stack	*create_lis_stack(t_stack *src)
 	t_stack	*s;
 	t_lis	*lis;
 
+	if (src == NULL)
+		return (NULL);
 	lis = malloc(sizeof(t_lis));
 	if (lis == NULL)
 		return (NULL);
