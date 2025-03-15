@@ -41,9 +41,8 @@ re: fclean all
 
 re_bonus: fclean bonus
 
-run: debug
+run:
 	./push_swap "$(PROGRAM_ARG)"
-	@rm $(NAME) $(OBJ)
 
 debug: $(LIBFT_NAME) $(OBJ)
 	$(CC) $(CFLAGS) $(EXTRA_FLAGS) $(OBJ) $(LIBFT_NAME) -o $(NAME)

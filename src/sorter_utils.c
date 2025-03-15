@@ -86,3 +86,30 @@ ssize_t	push_unsorted(t_swapable *area)
 	}
 	return (stack_free(lis), 0);
 }
+
+ssize_t	push_top(t_swapable *area)
+{
+	int			sm;
+	size_t		index;
+	t_stack_op	op;
+
+	sm = stack_min_max(area->a, 0);
+	index = stack_find_index(area->a, sm);
+	if (index >= (area->a->len) / 2)
+	{
+		index = area->a->len - 1 - index;
+		op = OP_RA;
+	}
+	else
+	{
+		++index;
+		op = OP_RRA;
+	}
+	while (index > 0)
+	{
+		if (stack_do_op(area, op, 1) != 0)
+			return (-1);
+		index--;
+	}
+	return (0);
+}

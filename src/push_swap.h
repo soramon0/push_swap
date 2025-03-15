@@ -164,6 +164,7 @@ t_move					*create_rrarbpa_move(size_t b_moves, size_t a_moves);
 t_move					*create_rr_move(size_t rb_count, size_t ra_count);
 t_move					*create_rrr_move(size_t rb_count, size_t ra_count);
 ssize_t					push_unsorted_chunks(t_swapable *area);
+ssize_t					push_top(t_swapable *area);
 ssize_t					find_insert_pos(t_stack *pivot, t_stack *haystack,
 							int needle);
 ssize_t					find_insert_pos_rev(t_stack *pivot, t_stack *haystack,

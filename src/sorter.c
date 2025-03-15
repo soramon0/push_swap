@@ -63,54 +63,42 @@ ssize_t	push_sorted(t_swapable *area)
 	return (0);
 }
 
-ssize_t	push_top(t_swapable *area)
+ssize_t	best_out_of_three(t_swapable *area)
 {
-	int			sm;
-	size_t		index;
-	t_stack_op	op;
+	t_stack	*lis;
 
-	sm = stack_min_max(area->a, 0);
-	index = stack_find_index(area->a, sm);
-	if (index >= (area->a->len) / 2)
-	{
-		index = area->a->len - 1 - index;
-		op = OP_RA;
-	}
+	lis = get_best_lis(area);
+	if (lis == NULL)
+		return (-1);
+	if (lis->len == 3)
+		return (stack_free(lis), 0);
 	else
-	{
-		++index;
-		op = OP_RRA;
-	}
-	while (index > 0)
-	{
-		if (stack_do_op(area, op, 1) != 0)
-			return (-1);
-		index--;
-	}
-	return (0);
+		stack_do_op(area, OP_SA, 1);
+	if (push_top(area) != 0)
+		return (stack_free(lis), -1);
+	return (stack_free(lis), 0);
 }
 
 ssize_t	push_small_list(t_swapable *area)
 {
-	t_stack	*lis;
-
 	if (area->a->len == 5)
-	{
 		stack_do_op(area, OP_PB, 1);
+	if (area->a->len == 4)
 		stack_do_op(area, OP_PB, 1);
-	}
-	lis = get_best_lis(area);
-	if (lis == NULL)
+	if (best_out_of_three(area) != 0)
 		return (-1);
-	if (lis->len == 3 && area->b->len == 0)
-		return (stack_free(lis), 0);
-	else
-		stack_do_op(area, OP_SA, 1);
-	if (area->b->len > 0 && push_sorted(area) != 0)
-		return (stack_free(lis), -1);
+	if (area->b->len == 0)
+		return (0);
+	if (push_sorted(area) != 0)
+		return (-1);
 	if (push_top(area) != 0)
-		return (stack_free(lis), -1);
-	return (stack_free(lis), 0);
+		return (-1);
+	area->c = stack_copy(area->a);
+	if (area->c == NULL)
+		return (-1);
+	bubble_sort(area->c);
+	debug_msg("Stack is sorted = %d\n", stack_equal(area->a, area->c));
+	return (0);
 }
 
 ssize_t	sort(t_swapable *area)
