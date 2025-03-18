@@ -1,6 +1,6 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
 EXTRA_FLAGS= -g -D LOG_DEBUG=1
+CFLAGS = -Wall -Wextra -Werror $(EXTRA_FLAGS)
 BONUS_CFLAGS = -Wall -Wextra -Werror
 NAME = push_swap
 NAME_BONUS = checker
